@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eac46cd4-1158-400f-93a6-dca962b13783" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/accueil.jade" afterPath="$PROJECT_DIR$/views/accueil.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/includes/footer.jade" afterPath="$PROJECT_DIR$/views/includes/footer.jade" />
     </list>
     <ignored path="node-js-getting-started.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,11 +24,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="accueil.jade" pinned="false" current-in-tab="true">
+      <file leaf-file-name="accueil.jade" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/accueil.jade">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="408">
               <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="footer.jade" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/views/includes/footer.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="67" selection-start-line="10" selection-start-column="67" selection-end-line="10" selection-end-column="67" />
               <folding />
             </state>
           </provider>
@@ -92,6 +102,7 @@
         <option value="$PROJECT_DIR$/views/includes/header.jade" />
         <option value="$PROJECT_DIR$/routes/index.js" />
         <option value="$PROJECT_DIR$/views/accueil.jade" />
+        <option value="$PROJECT_DIR$/views/includes/footer.jade" />
       </list>
     </option>
   </component>
@@ -273,7 +284,7 @@
       <updated>1461320886858</updated>
       <workItem from="1461320888164" duration="910000" />
       <workItem from="1461322663591" duration="378000" />
-      <workItem from="1461329254864" duration="259000" />
+      <workItem from="1461329254864" duration="873000" />
     </task>
     <task id="LOCAL-00001" summary="test de commit avec WebForm">
       <created>1461321079262</created>
@@ -310,11 +321,18 @@
       <option name="project" value="LOCAL" />
       <updated>1461329437545</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="qques modifications">
+      <created>1461329520044</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1461329520044</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1547000" />
+    <option name="totallyTimeSpent" value="2161000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -446,6 +464,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="24" column="48" selection-start-line="24" selection-start-column="48" selection-end-line="24" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/includes/footer.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="67" selection-start-line="10" selection-start-column="67" selection-end-line="10" selection-end-column="67" />
           <folding />
         </state>
       </provider>
