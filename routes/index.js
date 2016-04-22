@@ -6,41 +6,40 @@ var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@
 var receiver = "smartdogs.educanine@gmail.com"
 var subject = "SmartDog-contact"
 
-var title = "Smart'Dogs"
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('accueil', { title: title, id : "accueil" });
+  res.render('accueil', { title: "Smart'Dogs : Education Canine", id : "accueil" });
 });
 
 /* GET contact page. */
 router.get('/contact', function(req, res, next) {
-  res.render('contact', {title: title, id : "contact"});
+  res.render('contact', {title: "Contact education canine", id : "contact"});
 });
 
 /* GET prestations page. */
 router.get('/prestation', function(req, res, next) {
-  res.render('prestation', {title: title, id : "prestation"});
+  res.render('prestation', {title: "Prestations Smartdogs", id : "prestation"});
 });
 
 /* GET qui suis-je page. */
 router.get('/qui', function(req, res, next) {
-  res.render('qui', {title: title, id : "qui"});
+  res.render('qui', {title: "Celia Aubertin Smartdogs", id : "qui"});
 });
 
 /* GET education page. */
 router.get('/education', function(req, res, next) {
-  res.render('education', {title: title, id : "education"});
+  res.render('education', {title: "Education Canine Besancon", id : "education"});
 });
 
 /* GET comportement page. */
 router.get('/comportement', function(req, res, next) {
-  res.render('comportement', {title: title, id : "comportement"});
+  res.render('comportement', {title: "Comportement Canin", id : "comportement"});
 });
 
 /* GET boutique page. */
 router.get('/boutique', function(req, res, next) {
-  res.render('boutique', {title: title, id : "boutique"});
+  res.render('boutique', {title: "Boutique Smartdogs Education Canine", id : "boutique"});
 });
 
 
