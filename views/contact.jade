@@ -92,8 +92,12 @@ block content
                     },
                     dataType: "json",
                     success: function (data) {
-                        $('#textarea').val(data);
+                        $('#textarea').val('');
+                        $('#nom').val('');
+                        $('#prenom').val('');
+                        $('#email').val('');
                         $('#success').show('slow').delay(4000).hide('slow');
+
                     }
                 });
             }
