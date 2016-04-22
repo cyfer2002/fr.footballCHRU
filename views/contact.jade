@@ -1,0 +1,100 @@
+//
+   Created by Nicolas.Vatin on 20/04/2016.
+
+extends layout
+block content
+    .container
+        .jumbotron
+            h2.text-center Contact
+            h2.text-center
+                small
+                    em
+                        p
+                            | N'hésitez pas à me contacter pour toute
+                            | question ou renseignement ...
+        .row
+            .col-xs-12.col-md-5
+                .jumbotron
+                    address
+                        strong #{title}
+                        br
+                        strong Célia Aubertin
+                        br
+                        | Besançon et alentours
+                        br
+                        | Tél. (+33) 6 52 29 41 36
+                        br
+                        em mail : smartdogs.educanine@gmail.com
+                    <script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script><div style='overflow:hidden;height:300px;width:300px;'><div id='gmap_canvas' style='height:300px;width:300px;'></div><div><small><a href="http://embedgooglemaps.com">									google maps carte							</a></small></div><style>#gmap_canvas img{max-width:none!important;background:none!important}</style></div><script type='text/javascript'>function init_map(){var myOptions = {zoom:11,center:new google.maps.LatLng(47.237829,6.024053900000013),mapTypeId: google.maps.MapTypeId.ROADMAP};map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(47.237829,6.024053900000013)});infowindow = new google.maps.InfoWindow({content:'<strong>Besançon et Alentours</strong><br>Besançon, France<br>'});google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker);});infowindow.open(map,marker);}google.maps.event.addDomListener(window, 'load', init_map);</script>
+            .col-xs-12.col-sm-6.col-md-7
+                form.well(id="formul_contact")
+                    legend Si vous voulez me laisser un message
+                    #success.panel.panel-success(style='display: none')
+                        .panel-heading
+                            h3.pannel-title Succés
+                        .panel-body
+                            | Votre message a bien été envoyé
+                    #alert.alert.alert-block.alert-danger(style="display: none")
+                        h4 Erreur !
+                        | Vous devez remplir toutes les cases !
+                    fieldset
+                        .row
+                            .col-md-4
+                                .form-group
+                                    br
+                                    br
+                                    label.sr-only(for="text") Texte
+                                    input.form-control(type="text" id="prenom" name="prenom" placeholder="Votre prénom :")
+                                    input.form-control(type="text" id="nom" name="nom" placeholder="Votre nom :")
+                                    label.sr-only(for="text") Texte
+                                    input.form-control(type="text" name="email" id="email" placeholder="Votre E-Mail : ")
+                            .col-md-5.col-md-offset-1
+                                h4 Comment m'avez vous trouvé ?
+                                .radio
+                                    label.radio(for="ami")
+                                        input(type="radio" name="origine" value="ami" id="ami")
+                                        | Par un ami
+                                .radio
+                                    label.radio(for="web")
+                                        input(type="radio" name="origine" value="web" id="web")
+                                        | Sur le web
+                                .radio
+                                    label.radio(for="hasard")
+                                        input(type="radio" name="origine" value="hasard" id="hasard")
+                                        | Par hasard
+                                .radio
+                                    label.radio(for="autre")
+                                        input(type="radio" name="origine" value="autre" id="autre")
+                                        | Autre
+                        label(for="textarea") Votre message :
+                        textarea.form-control(name="textarea" id="textarea" rows="4")
+                        p.help-block Vous pouvez agrandir la fenêtre
+                        input(type='button', value='Envoyer', class='btn btn-primary', onclick='checkAnswer()')
+    script(type='text/javascript').
+        function checkAnswer() {
+            if ((document.getElementById('prenom').value.toLowerCase() == '') || (document.getElementById('nom').value.toLowerCase() == '') || (document.getElementById('email').value.toLowerCase() == '') || $('input[type=radio]:checked').length == 0) {
+                if ($('#nom').val() == '') $('#nom').addClass('alert-danger');
+                if ($('#prenom').val() == '') $('#prenom').addClass('alert-danger');
+                if ($('#email').val() == '') $('#email').addClass('alert-danger');
+                if ($('input[type=radio]:checked').length == 0) $("div.radio").addClass("alert-danger");
+                $('#alert').show('slow').delay(4000).hide('slow');
+            }
+            else {
+                $.ajax({
+                    url: "/sendMail",
+                    type: "POST",
+                    data: {
+                        prenom: $('#prenom').val(),
+                        nom: $('#nom').val(),
+                        text: $('#textarea').val(),
+                        email: $('#email').val(),
+                        radio: $('#radio').val()
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        $('#textarea').val(data);
+                        $('#success').show('slow').delay(4000).hide('slow');
+                    }
+                });
+            }
+        }

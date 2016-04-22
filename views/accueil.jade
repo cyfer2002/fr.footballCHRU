@@ -1,0 +1,49 @@
+//
+   Created by Nicolas.Vatin on 20/04/2016.
+
+extends layout
+
+block content
+    .container
+        .jumbotron
+            .row
+                .col-xs-3.col-md-1
+                .col-xs-12.col-sm-6.col-md-10
+                    h2
+                        pFont(font-family="alex_brushregular") #{title} : Education Canine à domicile - comportement
+            .row
+                .col-xs-12
+                .col-xs-3.text-center
+                    img(src="/images/logo_fini.jpg" width="100%" class="img-circle")
+                    pFontSmall(font-family="alex_brushregular")
+                        small Confiance, Complicité & Contrôle
+                .col-xs-8
+                    h2.text-justify
+                        small
+                            p
+                                em
+                                    | #{title} propose des services afin de vous accompagner dans
+                                    | l'éducation de votre chien, de vous aider à mieux le comprendre
+                                    | ou à résoudre les problèmes que vous pouvez rencontrer
+        .jumbotron
+            #myCarousel.carousel.slide(data-ride="carousel")
+                ol.carousel-indicators
+                    li.active(data-target="myCarousel" data-slide-to="0")
+                    li(data-target="myCarousel" data-slide-to="1")
+                    li(data-target="myCarousel" data-slide-to="2")
+                    li(data-target="myCarousel" data-slide-to="3")
+                .carousel-inner(role="listbox")
+                    .item.active
+                        img(src="/images/img_chien1.jpg" wicth="100%" alt="chien")
+                    .item
+                        img(src="/images/img_chien2.jpg" wicth="100%" alt="chien")
+                    .item
+                        img(src="/images/img_chien3.jpg" wicth="100%" alt="chien")
+                    .item
+                        img(src="/images/img_chien4.jpg" wicth="100%" alt="chien")
+                a.left.carousel-control(href="#myCarousel" role="button" data-slide="prev")
+                    span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
+                    span.sr-only Previous
+                a.right.carousel-control(href="#myCarousel" role="button" data-slide="next")
+                    span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
+                    span.sr-only Next
