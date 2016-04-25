@@ -14,32 +14,32 @@ router.get('/', function(req, res, next) {
 
 /* GET contact page. */
 router.get('/contact', function(req, res, next) {
-  res.render('contact', {title: "Contact education canine", id : "contact"});
+  res.render('contact', {title: "Contact education canine doubs", id : "contact"});
 });
 
 /* GET prestations page. */
 router.get('/prestation', function(req, res, next) {
-  res.render('prestation', {title: "Prestations Smartdogs", id : "prestation"});
+  res.render('prestation', {title: "Prestations Smartdogs Besancon", id : "prestation"});
 });
 
 /* GET qui suis-je page. */
 router.get('/qui', function(req, res, next) {
-  res.render('qui', {title: "Celia Aubertin Smartdogs", id : "qui"});
+  res.render('qui', {title: "Celia Aubertin Smartdogs doubs Besancon", id : "qui"});
 });
 
 /* GET education page. */
 router.get('/education', function(req, res, next) {
-  res.render('education', {title: "Education Canine Besancon", id : "education"});
+  res.render('education', {title: "Education Canine Besancon Smartdogs", id : "education"});
 });
 
 /* GET comportement page. */
 router.get('/comportement', function(req, res, next) {
-  res.render('comportement', {title: "Comportement Canin", id : "comportement"});
+  res.render('comportement', {title: "Comportement Canin Doubs Besançon", id : "comportement"});
 });
 
 /* GET boutique page. */
 router.get('/boutique', function(req, res, next) {
-  res.render('boutique', {title: "Boutique Smartdogs Education Canine", id : "boutique"});
+  res.render('boutique', {title: "Boutique Smartdogs Education Canine Doubs", id : "boutique"});
 });
 
 
