@@ -1,0 +1,61 @@
+doctype html
+html(lang='fr')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name="keywords" content="chien, dressage, éducation, education, besancon, canin, canine, celia aubertin, doubs, besancon, besançon, chien, chienne, agility, ring, education canine, besancon education canine,besançon education canine, berger, terrier, chasse, american staff, stafford shire, educateur, education, éducateur, éducation, forum du chien forum canin, forum cynophile, cynophilie, oberyhme, obérythmé, obérythmée, obé-rythmée, obé rythmée")
+    meta(name="description", content='SmartDogs : Education Canine Besancon')
+    meta(name="author", content='N. VATIN')
+    link(rel="icon", href="/images/favico.ico" type="image/x-icon")
+    title #{title} - Smart'Dogs : Education Canine
+    // Bootstrap core CSS
+    - if (environment === 'development')
+      link(href='/bundles/application.css', rel='stylesheet')
+      script(src='/bundles/application.js')
+    - else
+      link(href='/assets/' + assetManifest.application.find(function(x) { return x.endsWith('.css'); }), rel='stylesheet')
+      script(src='/assets/' + assetManifest.application.find(function(x) { return x.endsWith('.js'); }))
+  body
+    .navbar.navbar-default.navbar-fixed-top
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle.collapsed(type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href="/")
+            img(src="/images/logo.png" class="logo")
+        #navbar.navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li.visible-xs
+              a(href="/") Accueil
+            li(class='education' === id ? "active" : "")
+              a(href="/education") Education
+            li(class='behavior' === id ? "active" : "")
+              a(href="/comportement") Comportement
+            li(class='services' === id ? "active" : "")
+              a(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item-services")
+                | Prestations&nbsp;
+                span.caret
+              ul(class="dropdown-menu" aria-labelledby="menu-item-services")
+                li
+                  a(href="/prestations") Toutes les prestations
+                li.divider(role="separator")
+                li
+                  a(href="/prestations#education") Education / comportement
+                li
+                  a(href="/prestations#balade") Balade éducative
+                li
+                  a(href="/prestations#pension") Pension
+                li
+                  a(href="/prestations#conseil") Conseil
+
+            li(class='who-am-i' === id ? "active" : "")
+              a(href="/qui-suis-je") Qui suis-je ?
+
+            //li(id="boutique")
+              a(href="/boutique") Boutique
+            li(id="contact")
+              a(href="/contact") Contact

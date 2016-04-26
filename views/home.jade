@@ -1,0 +1,87 @@
+extends layouts/application
+
+block content
+
+  #carousel.hidden-xs.carousel.slide(data-ride="carousel" data-interval="false")
+    ol.carousel-indicators
+      li.active(data-target="#carousel" data-slide-to="0")
+      li(data-target="#carousel" data-slide-to="1")
+      li(data-target="#carousel" data-slide-to="2")
+      li(data-target="#carousel" data-slide-to="3")
+    .carousel-inner(role="listbox")
+      .item.active
+        img(src="/images/carousel-1.jpg" width="100%" alt="chien")
+      .item
+        img(src="/images/carousel-2.jpg" width="100%" alt="chien")
+      .item
+        img(src="/images/carousel-3.jpg" width="100%" alt="chien")
+      .item
+        img(src="/images/carousel-4.jpg" width="100%" alt="chien")
+    a.left.carousel-control(href='#carousel', role='button', data-slide='prev')
+      span.fa.fa-chevron-left(aria-hidden='true')
+      span.sr-only Previous
+    a.right.carousel-control(href='#carousel', role='button', data-slide='next')
+      span.fa.fa-chevron-right(aria-hidden='true')
+      span.sr-only Next
+
+  .content
+    h1.title
+      | Education Canine à domicile - comportement
+
+    .visible-xs
+      img.img-thumbnail(src="/images/carousel-1.jpg" alt="chien")
+
+    p.desc
+      em
+        | #{title} propose des services afin de vous accompagner dans
+        | l'éducation de votre chien, de vous aider à mieux le comprendre
+        | ou à résoudre les problèmes que vous pouvez rencontrer.
+
+
+  .container.text-center
+    h2
+      | - Confiance, Complicité et Contrôle -
+
+    .home-services
+      .row
+        .col-md-3.col-sm-6
+          .thumbnail
+            a(href="/prestations#education" class="link")
+            img(src="/images/education.jpg")
+            .caption
+              h3
+                | Education
+              p
+                | Des cours à domicile ou en extérieur, adaptés vos besoins.
+                | Vous apprendrez à travailler <strong>avec</strong> votre chien.
+
+        .col-md-3.col-sm-6
+          .thumbnail
+            a(href="/prestations#balade" class="link")
+            img(src="/images/walk.jpg")
+            .caption
+              h3
+                | Balade
+              p
+                | Je vous propose des 3 types de balades : collectives, individuelles ou autonomes.
+
+        .col-md-3.col-sm-6
+          .thumbnail
+            a(href="/prestations#pension" class="link")
+            img(src="/images/lodging.jpg")
+            .caption
+              h3
+                | Pension
+              p
+                | Je peux accueillir votre chien lors de vos absences ou voyages, à mon domicile, en pension familiale.
+
+        .col-md-3.col-sm-6
+          .thumbnail
+            a(href="/prestations#conseil" class="link")
+            img(src="/images/advice.jpg")
+            .caption
+              h3
+                | Conseil
+              p
+                | Vous allez avoir un chiot ou un chien adulte ? Vous hésitez sur la
+                | race, le lieu, où l'obtenir, le caractère ?

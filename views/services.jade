@@ -1,0 +1,192 @@
+extends layouts/application
+
+block content
+  .container.services
+    .editorial
+      h2 Prestations
+      p.title-desc
+        em
+          | Smart'Dogs propose des services afin de vous
+          | accompagner dans l'éducation de votre chien, de vous aider à mieux
+          | le comprendre ou à résoudre les problèmes que vous pouvez
+          | rencontrer
+
+      .service-education
+        h3
+          a.anchor(name="education") Education / comportement
+          small
+            em &nbsp;- Des cours à domicile ou en extérieur, adaptés vos besoins
+        img.img-thumbnail.left(src="/images/education-big.jpg" class="img-thumbnail")
+        .right
+          table.table.table-striped.table-condensed.text-center
+            thead
+              tr
+                th(colspan="5") Cours individuels <small>(environ 1H)</small>
+              tr
+                th à l'unité
+                th 3
+                  span.hidden-xs &nbsp;leçons
+                th 5
+                  span.hidden-xs &nbsp;leçons
+                th 10
+                  span.hidden-xs &nbsp;leçons
+                th
+                  small 10
+                    span.hidden-xs &nbsp;leçons
+                  | &nbsp;chiot*
+            tbody
+              tr
+                td 40€
+                td 105€
+                td 165€
+                td 300€
+                td 250€
+          p.info.text-right
+            em
+              small * Jusqu'à 6 mois
+
+          table.table.table-striped.table-condensed.text-center
+            thead
+              tr
+                th Bilan&nbsp;comportemental <small>(durée&nbsp;variable)</small>
+                th Réeducation <small>(environ&nbsp;1H)</small>
+            tbody
+              tr
+                td 45€
+                td 40€
+
+        .alert.alert-warning.clear
+          span.caption À savoir
+          p
+            | Les bilans comportementaux sont obligatoires dans le cas de problèmes de comportement,
+            | sauf si un forfait 5 ou 10h est choisi.
+          p
+            | Pour un problème de comportement/une réeducation, je vous conseille
+            | fortement de ne pas prendre de cours à l'unité, mais d'opter pour un forfait,
+            | ce qui laisse du temps pour travailler sur le problème.
+          p
+            | Des frais de déplacement peuvent s'appliquer au delà de 25km : 0.4€/km.
+
+      .service-walk
+        h3
+          a.anchor(name="balade") Balade éducative
+          small
+            em &nbsp;- Je vous propose 3 types de balade
+
+        img.hidden-sm.hidden-xs.img-thumbnail.left(src="/images/walk-big.jpg" class="img-thumbnail")
+        img.visible-sm.visible-xs.img-thumbnail.left(src="/images/walk.jpg" class="img-thumbnail")
+        .right
+          ol
+            li
+              h4 La ballade collective
+              p
+                | Une balade à plusieurs, avec les propriétaires, votre chien
+                | s'amuse avec ses congénères, et vous pouvez apprendre à
+                | observer la communication de votre chien, et à obtenir son
+                | attention malgré ces distractions.
+            li
+              h4 La balade individuelle
+              p
+                | Adapté à votre chien et à vos envies&nbsp;: je passe prendre votre
+                | chien chez vous et le ramène après, et profite de l'absence de
+                | congénères pour le travailler sur les points de votre choix.
+            li
+              h4 La ballade autonome
+              p
+                | Une balade où votre chien sera en compagnie d'autres chiens dont
+                | l'affinité aura été testé. Le chien est un animal sociable :
+                | il a besoin de contacts avec ses congénères. Cette balade lui
+                | permet de se dépenser physiquement et mentalement en
+                | interagissant avec d'autres chiens.
+
+        table.table.table-striped.table-condensed.text-center.clear
+          thead
+            tr
+              th
+                span.hidden-xs Ballade&nbsp;
+                | Collective <small>(durée variable)</small>
+              th
+                span.hidden-xs Ballade&nbsp;
+                | Individuelle <small>(environ&nbsp;1H)</small>
+              th
+                span.hidden-xs Ballade&nbsp;
+                | Autonome <small>(environ&nbsp;1H)</small>
+          tbody
+            tr
+              td 15€
+              td 12€
+              td 10€
+
+        .alert.alert-warning
+          span.caption À savoir
+          p
+            | Possibilité de forfaits à la demande.
+
+      .service-lodging
+        h3
+          a.anchor(name="pension") Pension
+
+        img.img-thumbnail.left(src="/images/lodging-big.jpg" class="img-thumbnail")
+        .right
+          p
+            | Je peux accueillir votre chien lors de vos absences ou
+            |  voyages, à mon domicile, en pension familiale.
+          p
+            | Pour cela, il est nécessaire que les vaccins de votre chien soient à
+            | jour et qu'il soit vermifugé.
+          p
+            | Je vous propose également une garderie de jour&nbsp;: votre chien
+            | s'amuse et se dépense avec des congénères pendant que vous travaillez, et il
+            | revient fatigué chez vous.
+
+        table.table.table-striped.table-condensed.text-center.clear
+          thead
+            tr
+              th
+                span.hidden-xs À la&nbsp;
+                | Journée
+              th
+                span.hidden-xs Forfait&nbsp;
+                | Week-end
+              th
+                span.hidden-xs Forfait&nbsp;
+                | 7 jours
+              th
+                | Garderie <span class="hidden-xs">de jour</span> <small>(9H&nbsp;à&nbsp;18H)</small>
+          tbody
+            tr
+              td 15€
+              td 25€
+              td 90€
+              td 12€
+
+        .alert.alert-warning
+          span.caption À savoir
+          p
+            | L'alimentation de votre chien n'est pas inclus dans le tarif et doit être apportée par vos soins.
+
+      .service-advice
+        h3
+          a.anchor(name="conseil") Conseil
+
+        img.img-thumbnail.left(src="/images/advice-big.jpg" class="img-thumbnail")
+        .right
+          p
+            | Vous allez avoir un chiot ou un chien adulte ? Vous hésitez sur la
+            | race, le lieu, où l'obtenir, le caractère ?
+          p
+            | Je peux vous aider à choisir votre futur compagnon en fonction
+            | de votre mode de vie, vos habitudes et vos envies, afin que
+            | cette aventure se passe au mieux.<br> Je peux également
+            | répondre à toutes les questions que vous vous posez sur son
+            | arrivée, son éducation, sa socialisation...
+
+          p
+            strong Tarif unique&nbsp;
+            | 35€
+
+      hr.clear
+      .alert.alert-info
+        | Tout rendez vous fixé devra être annulé 48h à l'avance au minimum.
+        br
+        | Dans le cas contraire la séance sera facturée et non reportée. Merci de votre compréhension.

@@ -1,12 +1,9 @@
-# Node build artifacts
+# Dependency directories
 node_modules
-npm-debug.log
 
-# Local development
-*.env
-*.dev
-.DS_Store
+# IDE
+.idea
 
-# Docker
-Dockerfile
-docker-compose.yml
+# Bundles
+bundles/
+public/assets/
