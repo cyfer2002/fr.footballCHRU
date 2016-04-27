@@ -1,0 +1,93 @@
+.services {
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    margin-top: 60px;
+  }
+
+  .alert {
+    position: relative;
+
+    .caption {
+      position: absolute;
+      left: 15px;
+      top: -12px;
+      font-weight: bold;
+    }
+  }
+
+  .left {
+    width: 30%;
+    margin-top: 5px;
+    margin-right: 2.65%;
+  }
+
+  .right {
+    width: 67.35%;
+    margin-left: 0;
+    margin-bottom: 30px;
+
+    table:first-child th {
+      white-space: nowrap;
+    }
+
+    th {
+      vertical-align: middle;
+    }
+  }
+
+  table {
+    table-layout: fixed;
+    margin: 0;
+
+    &+ .alert {
+      margin-top: 31px;
+    }
+  }
+
+  th {
+    text-align: center;
+  }
+
+  ol {
+    padding: 0;
+    list-style-position: inside;
+
+    li {
+      margin-top: 25px;
+
+      &:first-child {
+        margin-top: 15px;
+      }
+    }
+  }
+
+  .service-lodging, .service-advice {
+    .right {
+      p {
+        margin-top: 15px;
+
+        &:first-child {
+          margin-top: 15px;
+        }
+      }
+    }
+  }
+
+  .alert-info {
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: 992px) { //@screen-sm) {
+  .services {
+    @include flat-images;
+
+    .right {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+}

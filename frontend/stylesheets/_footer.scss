@@ -1,0 +1,67 @@
+html, body {
+  height: 100%;
+}
+
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -175px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.push {
+  height: 175px; /* .push must be the same height as .footer */
+}
+
+footer {
+  position: relative;
+  z-index: 10;
+  background-color: #333;
+  padding: 20px 0 20px;
+  height: 105px;
+  margin-top: 70px;
+
+  .container {
+    background: transparent url(/images/logo-inverted-colors.png) 5% center no-repeat;
+  }
+
+  ul {
+    margin: 0;
+  }
+
+  li {
+    line-height: 2em;
+  }
+
+  a {
+    color: white;
+    white-space: nowrap;
+
+    &:hover {
+      color: white;
+      text-decoration: underline;
+    }
+  }
+
+  .fa {
+    padding-right: 10px;
+  }
+}
+
+@media (max-width: 768px) { // @screen-sm) {
+  .push {
+    display: none;
+  }
+  html, body, footer {
+    height: auto;
+  }
+  .wrapper {
+    margin: 0;
+    min-height: auto;
+  }
+  footer {
+    .container {
+      background-size: 64px 64px;
+    }
+  }
+}

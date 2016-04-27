@@ -1,0 +1,29 @@
+.navbar-header {
+  padding-left: 3%;
+
+  .navbar-brand {
+    padding: 5px 15px 5px 0;
+  }
+
+  .logo {
+    height: 100%;
+  }
+}
+
+.navbar {
+  .item-services {
+    a {
+      float: left;
+      padding-right: 0;
+    }
+    a + a {
+      padding-right: inherit;
+    }
+  }
+}
+
+@media (max-width: 992px) { // @screen-sm) {
+  .navbar a {
+    font-size: 13px;
+  }
+}

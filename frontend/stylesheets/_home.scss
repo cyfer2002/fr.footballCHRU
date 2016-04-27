@@ -1,0 +1,108 @@
+.content {
+  position: absolute;
+  top: 51px;
+  left: 0;
+  z-index: 1;
+  padding: 5px 3% 0 3%;
+  width: 55%;
+
+  .title, .desc {
+    color: white;
+    text-shadow: 3px 3px 2px #333;
+  }
+
+  .title {
+    font-family: AlexBrush-Regular;
+    font-size: 54px;
+    font-size: 3.3vw;
+  }
+
+  .desc {
+    line-height: 1.5em;
+    font-size: 22px;
+    font-size: 1.6vw;
+  }
+
+  img {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 1200px) { //@screen-lg) {
+  .content {
+    .title { font-size: 350%; font-size: 3.3vw; }
+    .desc  { font-size: 166.666%; font-size: 1.6vw; }
+  }
+}
+
+@media (max-width: 992px) { //@screen-md) {
+  .content {
+    .title { font-size: 250%; font-size: 3.3vw; }
+    .desc  { font-size: 125%; font-size: 1.6vw; }
+  }
+}
+
+@media (max-width: 768px) { //@screen-sm) {
+  .content {
+    position: static;
+    width: auto;
+
+    .title, .desc {
+      color: #333;
+      text-shadow: none;
+    }
+
+    .title { font-size: 45px; }
+    .desc { font-size: 22px; }
+  }
+
+  h2 {
+    font-size: 28px !important;
+    margin-top: 10px !important;
+  }
+
+  h3 {
+    font-size: 19px !important;
+  }
+}
+
+
+h2 {
+  font-family: AlexBrush-Regular;
+  font-size: 40px;
+  margin: 30px 0;
+}
+
+.home-services {
+  .thumbnail {
+    min-height: 340px;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      border-color: black;
+
+      p {
+        text-decoration: underline;
+      }
+    }
+
+    .link {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    img { width: 100%; }
+  }
+}
+
+@media (max-width: 992px) { //@screen-sm) {
+  .home-services {
+    .thumbnail {
+      min-height: 355px;
+    }
+  }
+}

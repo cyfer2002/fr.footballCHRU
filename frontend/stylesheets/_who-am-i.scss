@@ -1,0 +1,13 @@
+.who-am-i {
+  td:first-child {
+    white-space: nowrap;
+  }
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
