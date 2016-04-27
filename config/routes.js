@@ -14,8 +14,7 @@ var checkContactForm = eval(babel.transformFileSync(path.join(__dirname, '../fro
 }).code);
 
 var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
-// var receiver = "smartdogs.educanine@gmail.com";
-var receiver = "gtournie@gmail.com";
+var receiver = "smartdogs.educanine@gmail.com";
 
 var title = "Smart'Dogs";
 
