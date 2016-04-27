@@ -29,8 +29,6 @@ block content
               button(type="button" class="close" data-dismiss="alert" aria-label="Close")
                 span(aria-hidden="true") &times;
               | #{errors.error}
-          script(type='text/javascript').
-            setTimeout(function() { $('.message-sent, .message-error').fadeOut(400) }, 5000);
           .form-group(class=(errors.name ? "has-error" : ""))
             input.form-control(type="text" name="name" placeholder="Nom complet" autofocus="1" value=params.name)
             - if (errors.name)
