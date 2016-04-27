@@ -61,13 +61,19 @@ export default class ContactForm {
       data:     this.$form.serialize(),
       dataType: 'JSON',
       success: (data) => {
-        Flash.success(data.message, this.$form);
-        this.$form[0].reset();
+        if (data.error) {
+          Flash.danger(data.error, this.$form);
+        }
+        if (data.message) {
+          Flash.success(data.message, this.$form);
+          this.$form[0].reset();
+          grecaptcha.reset();
+        }
       },
       complete: () => {
         $button.prop('disabled', false);
       }
-    })
+    });
   }
 
   displayInputError(inputName, error) {

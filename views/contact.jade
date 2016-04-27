@@ -24,8 +24,13 @@ block content
               button(type="button" class="close" data-dismiss="alert" aria-label="Close")
                 span(aria-hidden="true") &times;
               | #{success}
-            script(type='text/javascript').
-              setTimeout(function() { $('.message-sent').fadeOut(400) }, 5000);
+          - if (errors.error)
+            .alert.alert-danger.message-error
+              button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                span(aria-hidden="true") &times;
+              | #{errors.error}
+          script(type='text/javascript').
+            setTimeout(function() { $('.message-sent, .message-error').fadeOut(400) }, 5000);
           .form-group(class=(errors.name ? "has-error" : ""))
             input.form-control(type="text" name="name" placeholder="Nom complet" autofocus="1" value=params.name)
             - if (errors.name)
@@ -43,12 +48,15 @@ block content
             - if (errors.origin)
               span.help-block #{errors.origin}
           .form-group(class=(errors.message ? "has-error" : ""))
-            label(for="textarea") Message&nbsp;
-            textarea.form-control(name="message" rows="4")
+            label(for="message") Message&nbsp;
+            textarea.form-control(name="message" id="message" rows="4")
               | #{params.message}
             - if (errors.message)
               span.help-block #{errors.message}
 
-          button.btn.btn-primary.btn-block(type="submit")
+          .captcha-wrapper
+            != captcha
+          button.btn.btn-primary(type="submit")
             .fa.fa-spinner.fa-pulse
             | Envoyer
+          .clearfix

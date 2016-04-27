@@ -395,11 +395,34 @@ h2 {
     }
 
     [type="submit"] {
+      float: right;
+      width: 170px;
+      height: 56px;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
       .fa { margin-right: 10px; }
 
       &:enabled {
         .fa { display: none; }
       }
+    }
+  }
+
+  .captcha-wrapper {
+    overflow: hidden;
+    float: left;
+    height: 56px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    .g-recaptcha {
+      position: relative;
+      top: -9px;
+      left: -1px;
     }
   }
 }

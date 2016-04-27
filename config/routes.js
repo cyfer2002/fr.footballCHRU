@@ -5,13 +5,17 @@ var router     = express.Router();
 var path = require('path');
 var babel = require("babel-core");
 
+var recaptcha = require('express-recaptcha');
+recaptcha.init('6LdAcR4TAAAAAGcofFEJ4baod06lfqdLOmjSY5ph', '6LdAcR4TAAAAAJ--MH6rZo7MRedRJLwCnl8i985d', { hl: 'fr' });
+
 // Import es6 file
 var checkContactForm = eval(babel.transformFileSync(path.join(__dirname, '../frontend/app/contact/check_form.es6'), {
   presets: ['es2015']
 }).code);
 
 var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
-var receiver = "smartdogs.educanine@gmail.com";
+// var receiver = "smartdogs.educanine@gmail.com";
+var receiver = "gtournie@gmail.com";
 
 var title = "Smart'Dogs";
 
@@ -41,12 +45,20 @@ router.get('/qui-suis-je', function(req, res, next) {
 });
 
 /* GET contact page. */
-router.get('/contact', function(req, res, next) {
+router.get('/contact', recaptcha.middleware.render, function(req, res, next) {
   var success = req.session.success;
   var errors = req.session.errors || {};
   var params = req.session.params || {};
   req.session.reset();
-  res.render('contact', { title: title, id: "contact", params: params, success: success, errors: errors });
+
+  res.render('contact', {
+    title: title,
+    id: "contact",
+    params: params,
+    success: success,
+    errors: errors,
+    captcha: req.recaptcha
+  });
 });
 
 
@@ -63,11 +75,22 @@ var ORIGINS = {
   other:    "autre"
 };
 
-router.post('/contact', function(req, res, next) {
+router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
+  // Check form fields
   var errors = checkContactForm(req.body);
   if (Object.keys(errors).length) {
     req.session.params = req.body;
     req.session.errors = errors;
+    return res.redirect('/contact');
+  }
+
+  // Check recaptcha
+  if (req.recaptcha.error) {
+    if (req.xhr) {
+      return res.json({ error: 'ReCaptcha Invalide.' });
+    }
+    req.session.params = req.body;
+    req.session.errors = { error: 'Veuillez activer Javascript.' };
     return res.redirect('/contact');
   }
 
@@ -81,7 +104,7 @@ router.post('/contact', function(req, res, next) {
     html: ("<a href='mailto:" + req.body.email + "'>" + req.body.name + "</a> (" +
       ORIGINS[req.body.origin] + ") :\n\n" + req.body.message).replace(/\n/g, '<br />')
   };
-  
+
   // send mail with defined transport object
   transporter.sendMail(mailOptions, function(error, info){
     if (error){
