@@ -14,8 +14,7 @@ export default class ContactForm {
       return h;
     }, {});
 
-    setTimeout(function() { this.$form.find('.message-sent, .message-error').fadeOut(400) }, 5000);
-
+    this.$form.find('.message-sent, .message-error').delay(5000).fadeOut(400);
     this.$form.on('submit', (e) => this.onSubmit(e));
   }
 

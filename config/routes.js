@@ -15,35 +15,39 @@ var checkContactForm = eval(babel.transformFileSync(path.join(__dirname, '../fro
 
 var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
 var receiver = "smartdogs.educanine@gmail.com";
-
 var title = "Smart'Dogs";
 
-/* GET home page. */
+// www to non www redirection
+var WWW_REG = /^www\./i;
+router.get('/*', function(req, res, next) {
+  if (req.get('host').match(WWW_REG)) {
+    res.redirect(req.protocol + '://' + req.get('host').replace(WWW_REG, '') + req.originalUrl);
+  } else {
+    next();
+  }
+});
+
+
 router.get('/', function(req, res, next) {
   res.render('home', { title: title });
 });
 
-/* GET education page. */
 router.get('/education', function(req, res, next) {
   res.render('education', { title: title, id: "education" });
 });
 
-/* GET behavior page. */
 router.get('/comportement', function(req, res, next) {
   res.render('behavior', { title: title, id: "behavior" });
 });
 
-/* GET services page. */
 router.get('/prestations', function(req, res, next) {
   res.render('services', { title: title, id: "services" });
 });
 
-/* GET qui suis-je page. */
 router.get('/qui-suis-je', function(req, res, next) {
   res.render('who-am-i', { title: title, id: "who-am-i" });
 });
 
-/* GET contact page. */
 router.get('/contact', recaptcha.middleware.render, function(req, res, next) {
   var success = req.session.success;
   var errors = req.session.errors || {};
