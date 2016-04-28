@@ -17,16 +17,6 @@ var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@
 var receiver = "smartdogs.educanine@gmail.com";
 var title = "Smart'Dogs";
 
-// www to non www redirection
-var WWW_REG = /^www\./i;
-router.get('/*', function(req, res, next) {
-  if (req.get('host').match(WWW_REG)) {
-    res.redirect(req.protocol + '://' + req.get('host').replace(WWW_REG, '') + req.originalUrl);
-  } else {
-    next();
-  }
-});
-
 
 router.get('/', function(req, res, next) {
   res.render('home', { title: title });
