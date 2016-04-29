@@ -14,28 +14,30 @@ var checkContactForm = eval(babel.transformFileSync(path.join(__dirname, '../fro
 }).code);
 
 var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
-var receiver = "smartdogs.educanine@gmail.com";
-var title = "Smart'Dogs";
+
+
+var RECEIVER = "smartdogs.educanine@gmail.com";
+var COMPANY_NAME = "Smart'Dogs";
 
 
 router.get('/', function(req, res, next) {
-  res.render('home', { title: title });
+  res.render('home', { title: COMPANY_NAME + ' - Éducation canine à domicile' });
 });
 
 router.get('/education', function(req, res, next) {
-  res.render('education', { title: title, id: "education" });
+  res.render('education', { title: COMPANY_NAME + ' - Éducation', id: "education" });
 });
 
 router.get('/comportement', function(req, res, next) {
-  res.render('behavior', { title: title, id: "behavior" });
+  res.render('behavior', { title: COMPANY_NAME + ' - Comportement', id: "behavior" });
 });
 
 router.get('/prestations', function(req, res, next) {
-  res.render('services', { title: title, id: "services" });
+  res.render('services', { title: COMPANY_NAME + ' - Prestations', id: "services" });
 });
 
 router.get('/qui-suis-je', function(req, res, next) {
-  res.render('who-am-i', { title: title, id: "who-am-i" });
+  res.render('who-am-i', { title: COMPANY_NAME + ' - Qui suis-je ?', id: "who-am-i" });
 });
 
 router.get('/contact', recaptcha.middleware.render, function(req, res, next) {
@@ -45,7 +47,7 @@ router.get('/contact', recaptcha.middleware.render, function(req, res, next) {
   req.session.reset();
 
   res.render('contact', {
-    title: title,
+    title: COMPANY_NAME + ' - Contact',
     id: "contact",
     params: params,
     success: success,
@@ -91,8 +93,8 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
 
   // setup e-mail data with unicode symbols
   var mailOptions = {
-    from: title + '<smartdog@gmx.fr>', // sender address
-    to: receiver, // list of receivers
+    from: COMPANY_NAME + '<smartdog@gmx.fr>', // sender address
+    to: RECEIVER, // list of receivers
     subject: req.body.name + " vous a envoyé un message",
     html: ("<a href='mailto:" + req.body.email + "'>" + req.body.name + "</a> (" +
       ORIGINS[req.body.origin] + ") :\n\n" + req.body.message).replace(/\n/g, '<br />')
