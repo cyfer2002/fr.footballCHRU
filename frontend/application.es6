@@ -17,6 +17,7 @@ import ContactForm from './app/contact/contact_form';
 
 $(() => {
   new ContactForm($('.contact-form form'));
+  new InscriptionForm($('.inscription-form form'));
 
 
   // Menu

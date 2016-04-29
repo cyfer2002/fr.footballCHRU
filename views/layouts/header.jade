@@ -4,9 +4,9 @@ html(lang='fr')
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
-    meta(name="keywords" content="chien, dressage, éducation, education, besancon, canin, canine, celia aubertin, doubs, besancon, besançon, chien, chienne, agility, ring, education canine, besancon education canine,besançon education canine, berger, terrier, chasse, american staff, stafford shire, educateur, education, éducateur, éducation, forum du chien forum canin, forum cynophile, cynophilie, oberyhme, obérythmé, obérythmée, obé-rythmée, obé rythmée")
-    meta(name="description", content='#{companyName} : Education Canine à Besancon')
-    meta(name="author", content='Célia Aubertin')
+    meta(name="keywords" content="")
+    meta(name="description", content='#{companyName}')
+    meta(name="author", content='Nicolas Vatin')
     meta(name="expires", content='never')
     link(rel="icon", href="/images/favico.ico" type="image/x-icon")
     title #{companyName} - #{title}
@@ -33,28 +33,26 @@ html(lang='fr')
             li.visible-xs
               a(href="/") Accueil
             li(class='education' === id ? "active" : "")
-              a(href="/education") Education
+              a(href="/education") A changer
             li(class='behavior' === id ? "active" : "")
-              a(href="/comportement") Comportement
+              a(href="/comportement") A changer
             li(class='services' === id ? "active" : "")
               a(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="menu-item-services")
-                | Prestations&nbsp;
+                | Inscription&nbsp;
                 span.caret
               ul(class="dropdown-menu" aria-labelledby="menu-item-services")
                 li
-                  a(href="/prestations") Toutes les prestations
+                  a(href="/indivInscription") Inscription Individuelle
+                li
+                  a(href="/teamInscription") Inscription d'une équipe
                 li.divider(role="separator")
                 li
-                  a(href="/prestations#education") Education / comportement
+                  a(href="/inscriptionList") Liste des inscrits
                 li
-                  a(href="/prestations#balade") Balade éducative
-                li
-                  a(href="/prestations#pension") Pension
-                li
-                  a(href="/prestations#conseil") Conseil
+                  a(href="/playerList") Liste des joueurs
 
             li(class='who-am-i' === id ? "active" : "")
-              a(href="/qui-suis-je") Qui suis-je ?
+              a(href="/qui-suis-je") Qui sommes-nous ?
 
             //li(id="boutique")
               a(href="/boutique") Boutique

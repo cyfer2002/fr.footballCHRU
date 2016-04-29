@@ -1,7 +1,7 @@
 var config = {};
 
-config.companyName  = "Smart'Dogs";
-config.contactEmail = "smartdogs.educanine@gmail.com";
+config.companyName  = "Football'CHRU";
+config.contactEmail = "nvatin@chu-besancon.fr";
 config.replyEmail   =  config.companyName + " <smartdog@gmx.fr>";
 
 

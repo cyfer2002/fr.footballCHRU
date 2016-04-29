@@ -15,11 +15,47 @@ var checkContactForm = eval(babel.transformFileSync(path.join(__dirname, '../fro
   presets: ['es2015']
 }).code);
 
+var checkInscriptionForm = eval(babel.transformFileSync(path.join(__dirname, '../frontend/app/contact/check_inscription_form.es6'), {
+  presets: ['es2015']
+}).code);
+
 var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
 
 
 router.get('/', function(req, res, next) {
-  res.render('home', { title: 'Éducation canine à domicile' });
+  res.render('home', { title: 'Tournoi de foot du CHRU' });
+});
+
+// List of team, replace with dataBase Access
+var teamList = [{name : "Chalut"}, {name : "C'est un test"}];
+
+router.get('/indivInscription',recaptcha.middleware.render , function(req, res, next) {
+  var success = req.session.success;
+  var errors = req.session.errors || {};
+  var params = req.session.params || {};
+  req.session.reset();
+
+  res.render('indivInscription', {
+    title: 'Inscription Individuelle',
+    id: "indivInscription",
+    params: params,
+    success: success,
+    errors: errors,
+    teams : teamList,
+    captcha: req.recaptcha
+  });
+});
+
+router.get('/teamInscription', function(req, res, next) {
+  res.render('teamInscription', { title: 'Inscription d\'une équipe', id: 'teamInscription' });
+});
+
+router.get('/inscriptionList', function(req, res, next) {
+  res.render('inscriptionList', { title: 'Liste des inscrits', id: 'inscriptionList' });
+});
+
+router.get('/playerList', function(req, res, next) {
+  res.render('playerList', { title: 'Liste des joueurs', id: 'playerList' });
 });
 
 router.get('/education', function(req, res, next) {
@@ -114,5 +150,40 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
   // HTML request
   req.session.success = message;
   return res.redirect('/contact');
+});
+
+router.post('/indivInscription', recaptcha.middleware.verify, function(req, res, next) {
+  // Check form fields
+  var errors = checkInscriptionForm(req.body);
+  if (Object.keys(errors).length) {
+    req.session.params = req.body;
+    req.session.errors = errors;
+    return res.redirect('/indivInscription');
+  }
+
+  // Check recaptcha
+  if (req.recaptcha.error) {
+    if (req.xhr) {
+      return res.json({ error: 'ReCaptcha Invalide.' });
+    }
+    req.session.params = req.body;
+    req.session.errors = { error: 'Veuillez activer Javascript.' };
+    return res.redirect('/indivInscription');
+  }
+
+  // Send to database asynchronously. This way the user won't have to wait.
+
+  // Add insert in database
+
+
+  // Ajax request
+  var message = 'Votre inscription a bien ete prise en compte.';
+  if (req.xhr) {
+    return res.json({ message: message });
+  }
+
+  // HTML request
+  req.session.success = message;
+  return res.redirect('/indivInscription');
 });
 module.exports = router;
