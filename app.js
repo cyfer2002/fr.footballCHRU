@@ -9,6 +9,7 @@ var session = require('client-sessions');
 var _ = require('lodash');
 
 var routes = require('./config/routes');
+var config = require('./config/config');
 
 var app = express();
 
@@ -54,7 +55,7 @@ if (app.get('env') === 'production') {
   }
 }
 app.locals.environment = app.get('env');
-
+app.locals.companyName = config.companyName;
 
 // error handlers
 
