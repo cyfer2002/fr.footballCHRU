@@ -6,6 +6,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('client-sessions');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var _ = require('lodash');
 
 var routes = require('./config/routes');
@@ -16,6 +18,42 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+// Passport Config
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(function(username, password, done) {
+  process.nextTick(function() {
+    // Auth Check Logic
+    var selectQuery = 'SELECT * FROM USER WHERE username = ?';
+    var user;
+    var cnx = config.pool.getConnection(function(err, cnx){
+      var sqlQuery = cnx.query(selectQuery, username);
+      sqlQuery.on("result", function(row) {
+        user = row;
+      });
+      sqlQuery.on("end", function() {
+        cnx.destroy();
+        if (!bcrypt.compareSync(password, user.password)) {
+          return done(null, false);
+        }
+        else return done(null, user);
+      });
+      sqlQuery.on("error", function(error) {
+        return done(error);
+      });
+    });
+  });
+}));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 // Sessions
 app.use(session({
@@ -37,6 +75,7 @@ app.use('/', routes);
 // Redirect jquery, bootstrap, font-awesome
 app.use('/bundles', express.static(__dirname + '/bundles'));
 app.use('/images', express.static(__dirname + '/frontend/images'));
+app.use('/identite', express.static(__dirname + '/frontend/images/identite'));
 app.use('/fonts', express.static(__dirname + '/frontend/fonts'));
 
 

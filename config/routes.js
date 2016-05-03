@@ -1,5 +1,6 @@
 var express    = require('express');
 var nodemailer = require('nodemailer');
+var multer = require('multer');
 var router     = express.Router();
 
 var config = require('./config');
@@ -19,7 +20,11 @@ var checkInscriptionForm = eval(babel.transformFileSync(path.join(__dirname, '..
   presets: ['es2015']
 }).code);
 
-var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
+var upload = multer({dest: './frontend/images/identite'});
+
+
+// Uncomment if send Mail is used
+// var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
 
 
 router.get('/', function(req, res, next) {
@@ -27,7 +32,7 @@ router.get('/', function(req, res, next) {
 });
 
 // List of team, replace with dataBase Access
-var teamList = [{name : "Chalut"}, {name : "C'est un test"}];
+var teamList = [{name : "Les chevaliers"}, {name : "Chat"}];
 
 router.get('/indivInscription',recaptcha.middleware.render , function(req, res, next) {
   var success = req.session.success;
@@ -152,7 +157,7 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
   return res.redirect('/contact');
 });
 
-router.post('/indivInscription', recaptcha.middleware.verify, function(req, res, next) {
+router.post('/indivInscription', recaptcha.middleware.verify, upload.single('displayImage'), function(req, res, next) {
   // Check form fields
   var errors = checkInscriptionForm(req.body);
   if (Object.keys(errors).length) {
@@ -162,7 +167,7 @@ router.post('/indivInscription', recaptcha.middleware.verify, function(req, res,
   }
 
   // Check recaptcha
-  if (req.recaptcha.error) {
+  if (!req.recaptcha.error) {
     if (req.xhr) {
       return res.json({ error: 'ReCaptcha Invalide.' });
     }
@@ -173,8 +178,36 @@ router.post('/indivInscription', recaptcha.middleware.verify, function(req, res,
 
   // Send to database asynchronously. This way the user won't have to wait.
 
-  // Add insert in database
+  // Insert in database
+  console.log('files :' + req.file.filename);
+  var id;
+  var cnx = config.pool.getConnection(function(err, cnx){
+    var selectTeam = { nomEquipe : req.body.team};
+    var sqlQuery = cnx.query("SELECT idEquipe FROM equipe WHERE ?", selectTeam);
+    sqlQuery.on("result", function(row) {
+      id = row.idEquipe;
+    });
+    sqlQuery.on("end", function() {
+      var valeur = { name : req.body.name, firstname : req.body.firstname, birthday : req.body.birthday, idTeam : id, displayImage : req.body.displayImage, email : req.body.email};
+      selectQuery = 'INSERT INTO players SET ?';
+      sqlQuery2 = cnx.query(selectQuery, valeur);
+      sqlQuery2.on("result", function(row) {
 
+      });
+      sqlQuery2.on("end", function() {
+        cnx.destroy();
+//        res.render('inscription',
+//          { user : req.user, title : title , equipes : listEquipe, joueurs : ''}
+//        )
+      });
+      sqlQuery2.on("error", function(error) {
+        console.log(error);
+      });
+    });
+    sqlQuery.on("error", function(error) {
+      console.log(error);
+    });
+  });
 
   // Ajax request
   var message = 'Votre inscription a bien ete prise en compte.';

@@ -47,13 +47,17 @@ block content
             input.form-control(type="email" name="email" placeholder="Email" value=params.email)
             - if (errors.email)
               span.help-block #{errors.email}
-          .form-group(class=(errors.team ? "has-error" : ""))
-            select(name="team").form-control
-              option(value="") - Quelle est votre équipe ? -
-              each team in teams
-                option(value=team.name selected=team.name === params.team) #{team.name}
-            - if (errors.team)
-              span.help-block #{errors.team}
+          .row
+            .col-md-8
+              .form-group(class=(errors.team ? "has-error" : ""))
+                select(name="team").form-control
+                  option(value="") - Quelle est votre équipe ? -
+                  each team in teams
+                    option(value=team.name selected=team.name === params.team) #{team.name}
+                - if (errors.team)
+                  span.help-block #{errors.team}
+            .col-md-2.col-md-offset-2
+              button.btn.btn-primary.btn-sm(data-toggle='modal' data-target='#mypopup') +
           .form-group(class=(errors.message ? "has-error" : ""))
             label(for="message") Message&nbsp;
             textarea.form-control(name="message" id="message" rows="4")
