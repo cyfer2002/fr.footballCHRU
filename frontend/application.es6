@@ -14,6 +14,7 @@ import './config/font-awesome.config.less';
 import './application.css.scss';
 
 import ContactForm from './app/contact/contact_form';
+import InscriptionForm from './app/inscription/inscription_form';
 
 $(() => {
   new ContactForm($('.contact-form form'));

@@ -1,8 +1,6 @@
 var express    = require('express');
 var nodemailer = require('nodemailer');
-var multer = require('multer');
 var router     = express.Router();
-
 var config = require('./config');
 
 var path = require('path');
@@ -16,12 +14,13 @@ var checkContactForm = eval(babel.transformFileSync(path.join(__dirname, '../fro
   presets: ['es2015']
 }).code);
 
-var checkInscriptionForm = eval(babel.transformFileSync(path.join(__dirname, '../frontend/app/contact/check_inscription_form.es6'), {
+var checkInscriptionForm = eval(babel.transformFileSync(path.join(__dirname, '../frontend/app/inscription/check_inscription_form.es6'), {
   presets: ['es2015']
 }).code);
 
+// Multer config
+var multer = require('multer');
 var upload = multer({dest: './frontend/images/identite'});
-
 
 // Uncomment if send Mail is used
 // var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
@@ -159,6 +158,7 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
 
 router.post('/indivInscription', recaptcha.middleware.verify, upload.single('displayImage'), function(req, res, next) {
   // Check form fields
+  console.log("Files : " + req.file.filename);
   var errors = checkInscriptionForm(req.body);
   if (Object.keys(errors).length) {
     req.session.params = req.body;
@@ -179,7 +179,6 @@ router.post('/indivInscription', recaptcha.middleware.verify, upload.single('dis
   // Send to database asynchronously. This way the user won't have to wait.
 
   // Insert in database
-  console.log('files :' + req.file.filename);
   var id;
   var cnx = config.pool.getConnection(function(err, cnx){
     var selectTeam = { nomEquipe : req.body.team};
@@ -188,7 +187,7 @@ router.post('/indivInscription', recaptcha.middleware.verify, upload.single('dis
       id = row.idEquipe;
     });
     sqlQuery.on("end", function() {
-      var valeur = { name : req.body.name, firstname : req.body.firstname, birthday : req.body.birthday, idTeam : id, displayImage : req.body.displayImage, email : req.body.email};
+      var valeur = req.body;
       selectQuery = 'INSERT INTO players SET ?';
       sqlQuery2 = cnx.query(selectQuery, valeur);
       sqlQuery2.on("result", function(row) {

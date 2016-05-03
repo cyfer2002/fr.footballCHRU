@@ -40,7 +40,7 @@ block content
             - if (errors.birthday)
               span.help-block #{errors.birthday}
           .form-group(class=(errors.displayImage ? "has-error" : ""))
-            input.form-control(type="file" name="displayImage" placeholder="Votre photo" autofocus="1" value=params.displayImage)
+            input.form-control(type="file" name="displayImage" placeholder="Votre photo" autofocus="1" value=params.displayImage accept="image/*")
             - if (errors.birthday)
               span.help-block #{errors.displayImage}
           .form-group(class=(errors.email ? "has-error" : ""))

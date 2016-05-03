@@ -1,5 +1,5 @@
 
-import checkForm from './check_form';
+import checkInscriptionForm from './../inscription/check_inscription_form';
 import Flash from '../lib/flash';
 
 const ERROR_CLASS = 'has-error';
@@ -60,6 +60,9 @@ export default class InscriptionForm {
       url:      this.$form.attr('action'),
       method:   this.$form.attr('method'),
       data:     this.$form.serialize(),
+      contentType: false,
+      processData: false,
+      enctype: 'multipart/form-data',
       dataType: 'JSON',
       success: (data) => {
         if (data.error) {
