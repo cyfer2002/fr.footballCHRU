@@ -2,6 +2,7 @@ var express    = require('express');
 var nodemailer = require('nodemailer');
 var router     = express.Router();
 var config = require('./config');
+var passport = require('passport');
 
 var path = require('path');
 var babel = require("babel-core");
@@ -21,6 +22,10 @@ var checkInscriptionForm = eval(babel.transformFileSync(path.join(__dirname, '..
 // Multer config
 var multer = require('multer');
 var upload = multer({dest: './frontend/images/identite'});
+
+// Passport initialize
+router.use(passport.initialize());
+router.use(passport.session());
 
 // Uncomment if sendMail is used
 // var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
@@ -132,6 +137,33 @@ router.get('/contact', recaptcha.middleware.render, function(req, res, next) {
   });
 });
 
+/* POST Login verification. */
+router.post('/login',
+  passport.authenticate('local', {
+    successRedirect : '/',
+    failureRedirect: '/loginFailure',
+    failureFlash: true
+  }));
+
+/* POST LogOut page. */
+router.get('/logOut', function (req, res, next) {
+  req.logout();
+  res.redirect('/');
+});
+
+router.get('/signIn', function (req, res, next) {
+  res.render('signIn');
+});
+
+/* POST Login Failure. */
+router.get('/loginFailure', function(req, res, next) {
+  res.send('Failed to authenticate');
+});
+
+/* POST Login Sucess. */
+router.get('/loginSuccess', function(req, res, next) {
+  res.send('Successfully authenticated');
+});
 
 
 /* GET boutique page. */

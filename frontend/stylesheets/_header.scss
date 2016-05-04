@@ -10,6 +10,29 @@
   }
 }
 
+.login {
+  position: absolute !important;
+  right: 0;
+  top: 0;
+  bottom: -1px;
+  width: 190px;
+  z-index: 2;
+
+  a {
+    background: black !important;
+    color: white !important;
+    padding-top: 4px !important;
+    height: 51px;
+  }
+
+  .fa {
+    padding-right: 5px;
+    font-size: 130%;
+    position: relative;
+    top: 2px;
+  }
+}
+
 .navbar {
   .item-services {
     a {
