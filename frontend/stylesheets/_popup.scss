@@ -1,4 +1,23 @@
-.inscription {
+.popup {
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    max-width: 630px;
+    min-width: 320px;
+    height: auto;
+    z-index: 2000;
+    visibility: hidden;
+    background: #473542;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+  }
   h2 {
     margin: 0 0 10px;
   }
@@ -24,7 +43,7 @@
     position: relative;
   }
 
-  .inscription-form {
+  .popup-form {
     position: relative;
     z-index: 20;
     width: 550px;
@@ -38,7 +57,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: #bce8f1;
+      background: white;
       opacity: 0.85;
       border-radius: 15px;
       z-index: -1;
@@ -53,33 +72,21 @@
         text-decoration: underline;
       }
 
-      .fa { margin-right: 10px; }
+      .fa {
+        margin-right: 10px;
+      }
 
       &:enabled {
-        .fa { display: none; }
+        .fa {
+          display: none;
+        }
       }
     }
   }
-
-  .captcha-wrapper {
-    overflow: hidden;
-    float: left;
-    height: 56px;
-    width: 300px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-
-    .g-recaptcha {
-      position: relative;
-      top: -9px;
-      left: -1px;
-    }
-  }
 }
-
 @media (max-width: 768px) { // @screen-sm) {
-  .inscription {
-    .inscription-form {
+  .popup {
+    .popup-form {
       position: static;
       padding: 0;
       margin: 0;
@@ -111,12 +118,5 @@
     .bg {
       display: none;
     }
-  }
-
-  // Recaptcha
-  footer + div {
-    z-index: 101;
-    transform: scale(0.9);
-    transform-origin: 0 0;
   }
 }

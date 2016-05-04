@@ -22,7 +22,7 @@ var checkInscriptionForm = eval(babel.transformFileSync(path.join(__dirname, '..
 var multer = require('multer');
 var upload = multer({dest: './frontend/images/identite'});
 
-// Uncomment if send Mail is used
+// Uncomment if sendMail is used
 // var transporter = nodemailer.createTransport('smtps://smartdog@gmx.fr:Mm2ppSDsf@mail.gmx.com');
 
 
@@ -30,23 +30,33 @@ router.get('/', function(req, res, next) {
   res.render('home', { title: 'Tournoi de foot du CHRU' });
 });
 
-// List of team, replace with dataBase Access
-var teamList = [{name : "Les chevaliers"}, {name : "Chat"}];
-
 router.get('/indivInscription',recaptcha.middleware.render , function(req, res, next) {
+  var teamList = [];
   var success = req.session.success;
   var errors = req.session.errors || {};
   var params = req.session.params || {};
   req.session.reset();
 
-  res.render('indivInscription', {
-    title: 'Inscription Individuelle',
-    id: "indivInscription",
-    params: params,
-    success: success,
-    errors: errors,
-    teams : teamList,
-    captcha: req.recaptcha
+  // Get Team List before redirect
+  var cnx = config.pool.getConnection(function(err, cnx){
+    var sqlQuery = cnx.query("SELECT * FROM teams");
+    sqlQuery.on("result", function(row) {
+      teamList.push(row.nameTeam);
+    });
+    sqlQuery.on("end", function() {
+      console.log(teamList);
+      res.render('indivInscription', {
+        title: 'Inscription Individuelle',
+        id: "indivInscription",
+        params: params,
+        success: success,
+        errors: errors,
+        teams : teamList,
+        captcha: req.recaptcha
+      });
+    });
+    sqlQuery.on("error", function(error) {
+    });
   });
 });
 
@@ -59,7 +69,35 @@ router.get('/inscriptionList', function(req, res, next) {
 });
 
 router.get('/playerList', function(req, res, next) {
-  res.render('playerList', { title: 'Liste des joueurs', id: 'playerList' });
+  var playerList = [];
+  var success = req.session.success;
+  var errors = req.session.errors || {};
+  var params = req.session.params || {};
+  req.session.reset();
+  // Get Team List before redirect
+  var cnx = config.pool.getConnection(function(err, cnx){
+    var sqlQuery = cnx.query("SELECT * FROM players");
+    sqlQuery.on("result", function(row) {
+      playerList.push(row);
+    });
+    sqlQuery.on("end", function() {
+      res.render('playerList', {
+        title: 'Liste des joueurs',
+        id: "playerList",
+        params: params,
+        success: success,
+        errors: errors,
+        players : playerList
+      });
+    });
+    sqlQuery.on("error", function(error) {
+      errors.error = error;
+    });
+  });
+});
+
+router.get('/teamList', function(req, res, next) {
+  res.render('teamList', { title: 'Liste des équipes', id: 'teamList' });
 });
 
 router.get('/education', function(req, res, next) {
@@ -132,7 +170,7 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
   // setup e-mail data with unicode symbols
   var mailOptions = {
     from: config.replyEmail,
-    to:   config.contactEmail,
+    to:   config.company.email,
     subject: req.body.name + " vous a envoyé un message",
     html: ("<a href='mailto:" + req.body.email + "'>" + req.body.name + "</a> (" +
       ORIGINS[req.body.origin] + ") :\n\n" + req.body.message).replace(/\n/g, '<br />')
@@ -156,9 +194,11 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
   return res.redirect('/contact');
 });
 
+
 router.post('/indivInscription', recaptcha.middleware.verify, upload.single('displayImage'), function(req, res, next) {
   // Check form fields
   console.log("Files : " + req.file.filename);
+  req.body.displayImage = req.file.originalname;
   var errors = checkInscriptionForm(req.body);
   if (Object.keys(errors).length) {
     req.session.params = req.body;
@@ -181,13 +221,13 @@ router.post('/indivInscription', recaptcha.middleware.verify, upload.single('dis
   // Insert in database
   var id;
   var cnx = config.pool.getConnection(function(err, cnx){
-    var selectTeam = { nomEquipe : req.body.team};
-    var sqlQuery = cnx.query("SELECT idEquipe FROM equipe WHERE ?", selectTeam);
+    var selectTeam = { nameTeam : req.body.nameTeam };
+    var sqlQuery = cnx.query("SELECT idTeam FROM teams WHERE ?", selectTeam);
     sqlQuery.on("result", function(row) {
-      id = row.idEquipe;
+      id = row.idTeam;
     });
     sqlQuery.on("end", function() {
-      var valeur = req.body;
+      var valeur = { idTeam: id, name: req.body.name, firstname: req.body.firstname, birthday: req.body.birthday, email: req.body.email, displayImage: req.file.filename };
       selectQuery = 'INSERT INTO players SET ?';
       sqlQuery2 = cnx.query(selectQuery, valeur);
       sqlQuery2.on("result", function(row) {
@@ -195,9 +235,6 @@ router.post('/indivInscription', recaptcha.middleware.verify, upload.single('dis
       });
       sqlQuery2.on("end", function() {
         cnx.destroy();
-//        res.render('inscription',
-//          { user : req.user, title : title , equipes : listEquipe, joueurs : ''}
-//        )
       });
       sqlQuery2.on("error", function(error) {
         console.log(error);
@@ -209,7 +246,7 @@ router.post('/indivInscription', recaptcha.middleware.verify, upload.single('dis
   });
 
   // Ajax request
-  var message = 'Votre inscription a bien ete prise en compte.';
+  var message = 'Votre inscription a bien été prise en compte.';
   if (req.xhr) {
     return res.json({ message: message });
   }
@@ -218,4 +255,5 @@ router.post('/indivInscription', recaptcha.middleware.verify, upload.single('dis
   req.session.success = message;
   return res.redirect('/indivInscription');
 });
+
 module.exports = router;

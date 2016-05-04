@@ -23,11 +23,8 @@ export default function checkInscriptionForm(inputs) {
   } else if (!REG_EMAIL.test(inputs.email)) {
     errors.email = 'Addresse email invalide';
   }
-  if (!inputs.team.trim()) {
-    errors.team = 'Ce champ est requis';
-  }
-  if (!inputs.message.trim()) {
-    errors.message = 'Ce champ est requis';
+  if (!inputs.nameTeam.trim()) {
+    errors.nameTeam = 'Ce champ est requis';
   }
   return errors;
 }

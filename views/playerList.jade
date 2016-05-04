@@ -1,0 +1,55 @@
+extends layouts/application
+
+block content
+  .container.player.editorial
+    h3.text-center Liste des joueurs dans la base
+    - if (success)
+      .alert.alert-success.message-sent
+        button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+          span(aria-hidden="true") &times;
+        | #{success}
+    - if (errors.error)
+      .alert.alert-danger.message-error
+        button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+          span(aria-hidden="true") &times;
+        | #{errors.error}
+    .panel-group(id='accordion' role='tablist' aria-multiselectable='true')
+      each player in players
+        .panel.panel-default
+          .panel-heading(role='tab' id='head' + player.idPlayers)
+            h4(class='panel-title')
+              a(role='button' data-toggle='collapse' data-parent='#accordion' href='#collapse' + player.idPlayers aria-expanded='true' aria-controls='collapse' + player.idPlayers)
+                .row
+                  .col-md-3
+                    h6(id='id' class='text-center') #{player.idPlayers}
+                  .col-md-3
+                    h6(id='nom' class='text-center') #{player.name}
+                  .col-md-3
+                    h6(id='prenom' class='text-center') #{player.firstname}
+                  .col-md-3
+                    h6(id='idEquipe' class='text-center') #{player.idTeam}
+          .panel-collapse(class='collapse' role='tabpanel' id='collapse' + player.idPlayers aria-labelledby='head' + player.idPlayers)
+            .panel-body
+              .col-md-4
+                img(src='./images/identite/' + player.displayImage id='cropbox' width='120' height='120' class='img-rounded')
+              .col-md-8
+                | Nom : #{player.name}
+                p
+                | Prénom : #{player.firstname}
+                p
+                | Date de Naissance :
+                span= moment(player.birthday).format("DD/MM/YYYY")
+                p
+                | Nom : #{player.name}
+    table.table.table-striped
+      tbody
+        tr
+          td Nom
+          td Prénom
+          td Date de naissance
+        each player in players
+          tr
+            td #{player.idPlayers}
+            td #{player.name}
+            td #{player.firstname}
+            td #{player.birthday}

@@ -11,6 +11,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var _ = require('lodash');
 
 var routes = require('./config/routes');
+var teams = require('./config/teams');
 var config = require('./config/config');
 
 var app = express();
@@ -71,6 +72,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+app.use('/teams/', teams);
 
 // Redirect jquery, bootstrap, font-awesome
 app.use('/bundles', express.static(__dirname + '/bundles'));
@@ -94,7 +96,8 @@ if (app.get('env') === 'production') {
   }
 }
 app.locals.environment = app.get('env');
-app.locals.companyName = config.companyName;
+app.locals.company = config.company;
+app.locals.moment = require('./config/moment');
 
 // error handlers
 

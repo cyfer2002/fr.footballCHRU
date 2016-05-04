@@ -1,20 +1,55 @@
 extends layouts/application
 
 block content
+  #mypopup.popup.modal.fade(role='dialog')
+    .modal-dialog
+      .modal-content
+        .modal-header
+          .row
+            .col-md-8
+              h4.modal-title Ajouter votre equipe
+            .col-md-4
+              button.close(type='button' data-dismiss='modal') &times;
+        .modal-body
+          .popup-form
+            .bg
+            h4 Pour ajouter votre équipe, merci de remplir les champs suivant.
+            br
+            form(action='/teams/' method='post' accept-charset="UTF-8" novalidate="novalidate")
+              - if (success)
+                .alert.alert-success.message-sent
+                  button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                    span(aria-hidden="true") &times;
+                  | #{success}
+              - if (errors.error)
+                .alert.alert-danger.message-error
+                  button(type="button" class="close" data-dismiss="alert" aria-label="Close")
+                    span(aria-hidden="true") &times;
+                  | #{errors.error}
+              .form-group(class=(errors.nameTeam ? "has-error" : ""))
+                input.form-control(type="text" name="nameTeam" placeholder="Nom de l'équipe" autofocus="1" value=params.nameTeam)
+                - if (errors.nameTeam)
+                  span.help-block #{errors.nameTeam}
+              button.btn.btn-primary(type="submit")
+                .fa.fa-spinner.fa-pulse
+                | Envoyer
+              .clearfix
+        .modal-footer
+          button(type='button', class='btn btn-default', data-dismiss='modal') Close
   .inscription
     .container
       .inscription-form
         .bg
         h2 Inscription
         address
-          strong #{companyName} - Nicolas VATIN
+          strong #{company.name} - Nicolas VATIN
           span.visible-xs
             br
             | Besançon et alentours
           br
-          | <a href="tel:+33652294136">(+33) 6 52 29 41 36</a>
+          | <a href="tel:#{company.phone.replace(/[()\s]/g, '')}">#{company.phone}</a>
           br
-          | <a href="mailto:smartdogs.educanine@gmail.com">smartdogs.educanine@gmail.com</a>
+          | <a href="mailto:#{company.email}">#{company.email}</a>
 
         form(action="/indivInscription" method="post" accept-charset="UTF-8" novalidate="novalidate")
           - if (success)
@@ -48,22 +83,16 @@ block content
             - if (errors.email)
               span.help-block #{errors.email}
           .row
-            .col-md-8
+            .col-md-8.col-xs-8
               .form-group(class=(errors.team ? "has-error" : ""))
-                select(name="team").form-control
+                select(name="nameTeam").form-control
                   option(value="") - Quelle est votre équipe ? -
-                  each team in teams
-                    option(value=team.name selected=team.name === params.team) #{team.name}
-                - if (errors.team)
-                  span.help-block #{errors.team}
-            .col-md-2.col-md-offset-2
-              button.btn.btn-primary.btn-sm(data-toggle='modal' data-target='#mypopup') +
-          .form-group(class=(errors.message ? "has-error" : ""))
-            label(for="message") Message&nbsp;
-            textarea.form-control(name="message" id="message" rows="4")
-              | #{params.message}
-            - if (errors.message)
-              span.help-block #{errors.message}
+                  each nameTeam in teams
+                    option(value=nameTeam selected=nameTeam === params.nameTeam) #{nameTeam}
+                - if (errors.nameTeam)
+                  span.help-block #{errors.nameTeam}
+            .col-md-2.col-xs-2.col-xs-offset-2.col-md-offset-2
+              button.btn.btn-primary.btn-sm(type='button' data-toggle='modal' data-target='#mypopup') +
 
           .captcha-wrapper
             != captcha

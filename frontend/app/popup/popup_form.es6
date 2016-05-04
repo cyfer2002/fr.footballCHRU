@@ -1,15 +1,15 @@
 
-import checkInscriptionForm from './../inscription/check_inscription_form';
+import checkForm from './check_form';
 import Flash from '../lib/flash';
 
 const ERROR_CLASS = 'has-error';
 
-export default class InscriptionForm {
+export default class PopupForm {
   constructor(form) {
     this.$form = $(form);
     if (!this.$form.length) return;
 
-    this.$inputs = 'name firstname birthday displayImage email nameTeam message'.split(' ').reduce((h, inputName) => {
+    this.$inputs = 'nameTeam'.split(' ').reduce((h, inputName) => {
       h[inputName] = this.$form.find(`[name="${inputName}"]`);
       return h;
     }, {});
@@ -40,7 +40,7 @@ export default class InscriptionForm {
     this.resetErrors();
 
     // Check if user filled the form correctly
-    var errors = checkInscriptionForm(this.inputValues);
+    var errors = checkForm(this.inputValues);
 
     // Error found
     if (Object.keys(errors).length) {
@@ -54,18 +54,12 @@ export default class InscriptionForm {
 
     // Display spinner
     var $button = this.$form.find('[type="submit"]').prop('disabled', true);
-
-    // Param for upload file with Jquery and Ajax
-    var formdata = (window.FormData) ? new FormData(this.$form[0]) : null;
-    var data = (formdata !== null) ? formdata : this.$form.serialize();
     
     // Ajax call
     $.ajax({
       url:      this.$form.attr('action'),
       method:   this.$form.attr('method'),
-      data:     data,
-      contentType: false, // Mandatory for upload
-      processData: false, // Mandatory for upload
+      data:     this.$form.serialize(),
       dataType: 'JSON',
       success: (data) => {
         if (data.error) {
@@ -74,7 +68,6 @@ export default class InscriptionForm {
         if (data.message) {
           Flash.success(data.message, this.$form);
           this.$form[0].reset();
-          grecaptcha.reset();
         }
       },
       complete: () => {

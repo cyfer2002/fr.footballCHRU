@@ -15,10 +15,12 @@ import './application.css.scss';
 
 import ContactForm from './app/contact/contact_form';
 import InscriptionForm from './app/inscription/inscription_form';
+import PopupForm from './app/popup/popup_form';
 
 $(() => {
   new ContactForm($('.contact-form form'));
   new InscriptionForm($('.inscription-form form'));
+  new PopupForm($('.popup-form form'));
 
 
   // Menu
