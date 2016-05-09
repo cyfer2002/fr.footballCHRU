@@ -2,6 +2,7 @@ var express    = require('express');
 var nodemailer = require('nodemailer');
 var router     = express.Router();
 var config = require('./config');
+var pool = require('./database');
 var passport = require('passport');
 
 var path = require('path');
@@ -32,7 +33,17 @@ router.use(passport.session());
 
 
 router.get('/', function(req, res, next) {
-  res.render('home', { title: 'Tournoi de foot du CHRU' });
+  var success = req.session.success;
+  var errors = req.session.errors || {};
+  var params = req.session.params || {};
+  req.session.reset();
+  res.render('home', {
+    title: 'Tournoi de foot du CHRU',
+    params: params,
+    success: success,
+    errors: errors,
+    user : req.user
+  });
 });
 
 router.get('/indivInscription',recaptcha.middleware.render , function(req, res, next) {
@@ -43,7 +54,7 @@ router.get('/indivInscription',recaptcha.middleware.render , function(req, res, 
   req.session.reset();
 
   // Get Team List before redirect
-  var cnx = config.pool.getConnection(function(err, cnx){
+  var cnx = pool.getConnection(function(err, cnx){
     var sqlQuery = cnx.query("SELECT * FROM teams");
     sqlQuery.on("result", function(row) {
       teamList.push(row.nameTeam);
@@ -80,7 +91,7 @@ router.get('/playerList', function(req, res, next) {
   var params = req.session.params || {};
   req.session.reset();
   // Get Team List before redirect
-  var cnx = config.pool.getConnection(function(err, cnx){
+  var cnx = pool.getConnection(function(err, cnx){
     var sqlQuery = cnx.query("SELECT * FROM players");
     sqlQuery.on("result", function(row) {
       playerList.push(row);
@@ -252,7 +263,7 @@ router.post('/indivInscription', recaptcha.middleware.verify, upload.single('dis
 
   // Insert in database
   var id;
-  var cnx = config.pool.getConnection(function(err, cnx){
+  var cnx = pool.getConnection(function(err, cnx){
     var selectTeam = { nameTeam : req.body.nameTeam };
     var sqlQuery = cnx.query("SELECT idTeam FROM teams WHERE ?", selectTeam);
     sqlQuery.on("result", function(row) {

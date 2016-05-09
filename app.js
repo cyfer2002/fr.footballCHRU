@@ -7,12 +7,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('client-sessions');
 var passport = require('passport');
+var bcrypt = require('bcrypt-nodejs');
 var LocalStrategy = require('passport-local').Strategy;
 var _ = require('lodash');
 
 var routes = require('./config/routes');
 var teams = require('./config/teams');
 var config = require('./config/config');
+var pool = require('./config/database');
 
 var app = express();
 
@@ -29,7 +31,7 @@ passport.use(new LocalStrategy(function(username, password, done) {
     // Auth Check Logic
     var selectQuery = 'SELECT * FROM USER WHERE username = ?';
     var user;
-    var cnx = config.pool.getConnection(function(err, cnx){
+    var cnx = pool.getConnection(function(err, cnx){
       var sqlQuery = cnx.query(selectQuery, username);
       sqlQuery.on("result", function(row) {
         user = row;
