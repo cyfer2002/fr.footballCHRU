@@ -1,3 +1,25 @@
 extends layouts/application
 
 block content
+  .container.player.editorial
+    table.table.table-striped
+      tbody
+        tr
+          td Id
+          td Nom
+          td Prénom
+          td Date de naissance
+          td Equipe
+          td
+        each player in players
+          tr
+            td #{player.idPlayers}
+            td #{player.name}
+            td #{player.firstname}
+            td
+              span= moment(player.birthday).format("DD/MM/YYYY")
+            td #{player.idTeam}
+            td
+              input(type='checkbox', name='modification', value=''+player.idParticipants+'')
+              button(class='glyphicon glyphicon-ok', value='' + player.idParticipants + '', id='validation', style='display: none')
+              button(class='glyphicon glyphicon-remove', value='' + player.idParticipants + '', id='suppression', style='display: none')

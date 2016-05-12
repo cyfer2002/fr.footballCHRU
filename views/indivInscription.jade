@@ -26,6 +26,7 @@ block content
                   button(type="button" class="close" data-dismiss="alert" aria-label="Close")
                     span(aria-hidden="true") &times;
                   | #{errors.error}
+              != messages('my_message_flash', locals)
               .form-group(class=(errors.nameTeam ? "has-error" : ""))
                 input.form-control(type="text" name="nameTeam" placeholder="Nom de l'équipe" autofocus="1" value=params.nameTeam)
                 - if (errors.nameTeam)
@@ -62,6 +63,7 @@ block content
               button(type="button" class="close" data-dismiss="alert" aria-label="Close")
                 span(aria-hidden="true") &times;
               | #{errors.error}
+          != messages('my_message_flash', locals)
           .form-group(class=(errors.name ? "has-error" : ""))
             input.form-control(type="text" name="name" placeholder="Nom complet" autofocus="1" value=params.name)
             - if (errors.name)

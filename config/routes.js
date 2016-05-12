@@ -20,6 +20,10 @@ var checkInscriptionForm = eval(babel.transformFileSync(path.join(__dirname, '..
   presets: ['es2015']
 }).code);
 
+var checkLoginForm = eval(babel.transformFileSync(path.join(__dirname, '../frontend/app/login/check_form.es6'), {
+  presets: ['es2015']
+}).code);
+
 // Multer config
 var multer = require('multer');
 var upload = multer({dest: './frontend/images/identite'});
@@ -36,13 +40,14 @@ router.get('/', function(req, res, next) {
   var success = req.session.success;
   var errors = req.session.errors || {};
   var params = req.session.params || {};
-  req.session.reset();
+  var user = req.user;
+//  req.session.reset();
   res.render('home', {
     title: 'Tournoi de foot du CHRU',
     params: params,
     success: success,
     errors: errors,
-    user : req.user
+    user: user
   });
 });
 
@@ -51,7 +56,8 @@ router.get('/indivInscription',recaptcha.middleware.render , function(req, res, 
   var success = req.session.success;
   var errors = req.session.errors || {};
   var params = req.session.params || {};
-  req.session.reset();
+  var user = req.user;
+  //req.session.reset();
 
   // Get Team List before redirect
   var cnx = pool.getConnection(function(err, cnx){
@@ -60,7 +66,6 @@ router.get('/indivInscription',recaptcha.middleware.render , function(req, res, 
       teamList.push(row.nameTeam);
     });
     sqlQuery.on("end", function() {
-      console.log(teamList);
       res.render('indivInscription', {
         title: 'Inscription Individuelle',
         id: "indivInscription",
@@ -68,10 +73,12 @@ router.get('/indivInscription',recaptcha.middleware.render , function(req, res, 
         success: success,
         errors: errors,
         teams : teamList,
+        user: user,
         captcha: req.recaptcha
       });
     });
     sqlQuery.on("error", function(error) {
+      errors.error = error;
     });
   });
 });
@@ -81,7 +88,32 @@ router.get('/teamInscription', function(req, res, next) {
 });
 
 router.get('/inscriptionList', function(req, res, next) {
-  res.render('inscriptionList', { title: 'Liste des inscrits', id: 'inscriptionList' });
+  var playerList = [];
+  var success = req.session.success;
+  var errors = req.session.errors || {};
+  var params = req.session.params || {};
+  var user = req.user;
+
+  var cnx = pool.getConnection(function(err, cnx){
+    var sqlQuery = cnx.query("SELECT * FROM players");
+    sqlQuery.on("result", function(row) {
+      playerList.push(row);
+    });
+    sqlQuery.on("end", function() {
+      res.render('inscriptionList', {
+        title: 'Liste des inscrits',
+        id: "inscriptionList",
+        params: params,
+        success: success,
+        errors: errors,
+        user: user,
+        players: playerList
+      });
+    });
+    sqlQuery.on("error", function(error) {
+      errors.error = error;
+    });
+  });
 });
 
 router.get('/playerList', function(req, res, next) {
@@ -89,7 +121,8 @@ router.get('/playerList', function(req, res, next) {
   var success = req.session.success;
   var errors = req.session.errors || {};
   var params = req.session.params || {};
-  req.session.reset();
+  var user = req.user;
+  //req.session.reset();
   // Get Team List before redirect
   var cnx = pool.getConnection(function(err, cnx){
     var sqlQuery = cnx.query("SELECT * FROM players");
@@ -103,7 +136,8 @@ router.get('/playerList', function(req, res, next) {
         params: params,
         success: success,
         errors: errors,
-        players : playerList
+        user: user,
+        players: playerList
       });
     });
     sqlQuery.on("error", function(error) {
@@ -113,30 +147,31 @@ router.get('/playerList', function(req, res, next) {
 });
 
 router.get('/teamList', function(req, res, next) {
-  res.render('teamList', { title: 'Liste des équipes', id: 'teamList' });
+  res.render('teamList', { title: 'Liste des équipes', id: 'teamList', user: req.user });
 });
 
 router.get('/education', function(req, res, next) {
-  res.render('education', { title: 'Éducation', id: "education" });
+  res.render('education', { title: 'Éducation', id: "education", user: req.user });
 });
 
 router.get('/comportement', function(req, res, next) {
-  res.render('behavior', { title: 'Comportement', id: "behavior" });
+  res.render('behavior', { title: 'Comportement', id: "behavior", user: req.user });
 });
 
 router.get('/prestations', function(req, res, next) {
-  res.render('services', { title: 'Prestations', id: "services" });
+  res.render('services', { title: 'Prestations', id: "services", user: req.user });
 });
 
 router.get('/qui-suis-je', function(req, res, next) {
-  res.render('who-am-i', { title: 'Qui suis-je ?', id: "who-am-i" });
+  res.render('who-am-i', { title: 'Qui suis-je ?', id: "who-am-i", user: req.user });
 });
 
 router.get('/contact', recaptcha.middleware.render, function(req, res, next) {
   var success = req.session.success;
   var errors = req.session.errors || {};
   var params = req.session.params || {};
-  req.session.reset();
+  var user = req.user;
+  //req.session.reset();
 
   res.render('contact', {
     title: 'Contact',
@@ -144,6 +179,7 @@ router.get('/contact', recaptcha.middleware.render, function(req, res, next) {
     params: params,
     success: success,
     errors: errors,
+    user: user,
     captcha: req.recaptcha
   });
 });
@@ -151,10 +187,11 @@ router.get('/contact', recaptcha.middleware.render, function(req, res, next) {
 /* POST Login verification. */
 router.post('/login',
   passport.authenticate('local', {
-    successRedirect : '/',
+    successRedirect : '/loginSuccess',
     failureRedirect: '/loginFailure',
     failureFlash: true
   }));
+
 
 /* POST LogOut page. */
 router.get('/logOut', function (req, res, next) {
@@ -168,12 +205,17 @@ router.get('/signIn', function (req, res, next) {
 
 /* POST Login Failure. */
 router.get('/loginFailure', function(req, res, next) {
-  res.send('Failed to authenticate');
+  res.send({
+    error: 'Failed to authenticate'
+  });
 });
 
 /* POST Login Sucess. */
 router.get('/loginSuccess', function(req, res, next) {
-  res.send('Successfully authenticated');
+  res.send( {
+    message: 'Successfully authenticated',
+    user: req.user
+  });
 });
 
 
@@ -194,6 +236,7 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
   var errors = checkContactForm(req.body);
   if (Object.keys(errors).length) {
     req.session.params = req.body;
+    req.flash("error", errors);
     req.session.errors = errors;
     return res.redirect('/contact');
   }
@@ -204,7 +247,7 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
       return res.json({ error: 'ReCaptcha Invalide.' });
     }
     req.session.params = req.body;
-    req.session.errors = { error: 'Veuillez activer Javascript.' };
+    req.flash("error", 'Veuillez activer Javascript.');
     return res.redirect('/contact');
   }
 
@@ -233,14 +276,13 @@ router.post('/contact', recaptcha.middleware.verify, function(req, res, next) {
   }
 
   // HTML request
-  req.session.success = message;
+  req.flash("info", message);
   return res.redirect('/contact');
 });
 
 
 router.post('/indivInscription', recaptcha.middleware.verify, upload.single('displayImage'), function(req, res, next) {
   // Check form fields
-  console.log("Files : " + req.file.filename);
   req.body.displayImage = req.file.originalname;
   var errors = checkInscriptionForm(req.body);
   if (Object.keys(errors).length) {

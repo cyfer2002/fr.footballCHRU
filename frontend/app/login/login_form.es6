@@ -1,6 +1,8 @@
 
 import checkForm from './check_form';
+import ReplaceFlash from '../lib/replaceflash';
 import Flash from '../lib/flash';
+import LogInUser from '../lib/loginuser';
 
 const ERROR_CLASS = 'has-error';
 
@@ -54,6 +56,7 @@ export default class LoginForm {
 
     // Display spinner
     var $button = this.$form.find('[type="submit"]').prop('disabled', true);
+
     
     // Ajax call
     $.ajax({
@@ -66,8 +69,10 @@ export default class LoginForm {
           Flash.danger(data.error, this.$form);
         }
         if (data.message) {
-          Flash.success(data.message, this.$form);
+          ReplaceFlash.success(data.message, this.$form);
           this.$form[0].reset();
+          LogInUser._display(data.user.username, $('[data-target="#login"]'));
+          setTimeout(function() { $('.modal').modal('hide'); }, 500);
         }
       },
       complete: () => {

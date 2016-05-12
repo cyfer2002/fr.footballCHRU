@@ -1,6 +1,6 @@
 var express    = require('express');
 var router     = express.Router();
-var config = require('./config');
+var pool = require('./database');
 
 var path = require('path');
 var babel = require("babel-core");
@@ -15,31 +15,41 @@ var checkPopupForm = eval(babel.transformFileSync(path.join(__dirname, '../front
 router.post('/', function(req, res, next) {
   // Check form fields
   var errors = checkPopupForm(req.body);
+  req.session.reset();
   if (Object.keys(errors).length) {
     req.session.params = req.body;
     req.session.errors = errors;
-    return res.redirect('/indivInscription#myPopup');
+    return res.redirect('/indivInscription');
   }
 
   // Insert in database
-  var message = 'Votre équipe a bien été ajouté.';
+  var message;
+  errors = null;
   var selectQuery = 'INSERT INTO teams (nameTeam) VALUES (\''+req.body.nameTeam+'\')';
-  var cnx = config.pool.getConnection(function(err, cnx){
+  var cnx = pool.getConnection(function(err, cnx){
     var sqlQuery = cnx.query(selectQuery);
     sqlQuery.on("result", function(row) {
+      message = 'Votre équipe a bien été ajouté.';
+      req.flash("info", "Votre équipe a bien été ajouté.");
     });
     sqlQuery.on("end", function() {
       cnx.destroy();
       // Ajax request
       if (req.xhr) {
-        return res.json({ message: message });
+        return res.json({
+          message: message,
+          error: errors
+        });
       }
       // HTML request
-      req.session.success = message;
-      return res.redirect('/indivInscription#myPopup');
+      req.session.errors = { error: errors };
+      req.session.success = message;      
+      
+      return res.redirect('/indivInscription');
     });
     sqlQuery.on("error", function(error) {
-      message = error.message;
+      errors = error.message;
+      req.flash("error", error.message);
     });
   });
 });
