@@ -11,6 +11,27 @@ var checkPopupForm = eval(babel.transformFileSync(path.join(__dirname, '../front
   presets: ['es2015']
 }).code);
 
+/* GET users listing. */
+router.get('/', function(req, res, next) {
+  var listEquipe = [];
+  var j = 0;
+  var selectQuery = 'SELECT * FROM TEAMS';
+  var cnx = pool.getConnection(function(err, cnx){
+    var sqlQuery = cnx.query(selectQuery);
+    sqlQuery.on("result", function(row) {
+      listEquipe[j] = {nameTeam : row.nameTeam, idTeam : row.idTeam};
+      j++;
+    });
+    sqlQuery.on("end", function() {
+      cnx.destroy();
+      res.json(listEquipe);
+    });
+    sqlQuery.on("error", function(error) {
+      console.log(error);
+    });
+  });
+});
+
 /* POST /teams/ */
 router.post('/', function(req, res, next) {
   // Check form fields

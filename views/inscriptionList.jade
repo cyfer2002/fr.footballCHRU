@@ -1,7 +1,7 @@
 extends layouts/application
 
 block content
-  .container.player.editorial
+  .container.player.editorial.checkbox-form
     table.table.table-striped
       tbody
         tr
@@ -12,7 +12,7 @@ block content
           td Equipe
           td
         each player in players
-          tr
+          tr(id=player.idPlayers)
             td #{player.idPlayers}
             td #{player.name}
             td #{player.firstname}
@@ -20,6 +20,6 @@ block content
               span= moment(player.birthday).format("DD/MM/YYYY")
             td #{player.idTeam}
             td
-              input(type='checkbox', name='modification', value=''+player.idParticipants+'')
-              button(class='glyphicon glyphicon-ok', value='' + player.idParticipants + '', id='validation', style='display: none')
-              button(class='glyphicon glyphicon-remove', value='' + player.idParticipants + '', id='suppression', style='display: none')
+              input(type='checkbox', name='modification', value=player.idPlayers, onClick=(user ? "CheckBoxForm.openChange(this.value)" : ""))
+              button(class='glyphicon glyphicon-ok', value=player.idPlayers, style='display: true')
+              button(class='glyphicon glyphicon-remove', value=player.idPlayers, style='display: none')

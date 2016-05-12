@@ -1,6 +1,4 @@
 
-const ALERT_TYPES = ["success", "info", "warning", "danger"];
-
 export default class LoginUser {
   static element(parent) {
     let $parent = $(parent);
