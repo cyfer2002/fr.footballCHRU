@@ -14,6 +14,7 @@ var _ = require('lodash');
 var routes = require('./config/routes');
 var teams = require('./config/teams');
 var config = require('./config/config');
+var players = require('./config/players');
 var pool = require('./config/database');
 
 var app = express();
@@ -82,6 +83,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/teams/', teams);
+app.use('/players/', players);
 
 // Redirect jquery, bootstrap, font-awesome
 app.use('/bundles', express.static(__dirname + '/bundles'));
@@ -106,7 +108,7 @@ if (app.get('env') === 'production') {
 }
 app.locals.environment = app.get('env');
 app.locals.company = config.company;
-app.locals.moment = require('./config/moment');
+app.locals.moment = require('moment');
 
 // error handlers
 

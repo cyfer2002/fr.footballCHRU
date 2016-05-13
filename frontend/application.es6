@@ -24,7 +24,7 @@ $(() => {
   new InscriptionForm($('.inscription-form form'));
   new PopupForm($('.popup-form form'));
   new LoginForm($('.login-form form'));
-  new CheckBoxForm($('.checkbox-form table'));
+  new CheckBoxForm($('.checkbox-form form'));
 
 
   // Menu

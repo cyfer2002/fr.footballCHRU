@@ -9,7 +9,7 @@ export default class InscriptionForm {
     this.$form = $(form);
     if (!this.$form.length) return;
 
-    this.$inputs = 'name firstname birthday displayImage email nameTeam message'.split(' ').reduce((h, inputName) => {
+    this.$inputs = 'name firstname birthday displayImage email nameTeam'.split(' ').reduce((h, inputName) => {
       h[inputName] = this.$form.find(`[name="${inputName}"]`);
       return h;
     }, {});

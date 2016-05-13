@@ -2,24 +2,49 @@ extends layouts/application
 
 block content
   .container.player.editorial.checkbox-form
-    table.table.table-striped
-      tbody
-        tr
-          td Id
-          td Nom
-          td Prénom
-          td Date de naissance
-          td Equipe
-          td
-        each player in players
-          tr(id=player.idPlayers)
-            td #{player.idPlayers}
-            td #{player.name}
-            td #{player.firstname}
-            td
-              span= moment(player.birthday).format("DD/MM/YYYY")
-            td #{player.idTeam}
-            td
-              input(type='checkbox', name='modification', value=player.idPlayers, onClick=(user ? "CheckBoxForm.openChange(this.value)" : ""))
-              button(class='glyphicon glyphicon-ok', value=player.idPlayers, style='display: true')
-              button(class='glyphicon glyphicon-remove', value=player.idPlayers, style='display: none')
+    form(action="/players/" method="PUT" accept-charset="UTF-8" novalidate="novalidate")
+      table.table.table-striped
+        tbody
+          tr
+            th(id="idPlayers") Id
+            th(id="name") Nom
+            th(id="firstname") Prénom
+            th(id="birthday") Date de naissance
+            th(id="idTeam") Equipe
+            th(id="email") Email
+            th(id="displayImage") Image
+            th
+          each player in players
+            tr(id=player.idPlayers)
+              .form-group(class=(errors.idPlayers ? "has-error" : ""))
+                td(headers="idPlayers") #{player.idPlayers}
+                  - if (errors.idPlayers)
+                    span.help-block #{errors.idPlayers}
+              .form-group(class=(errors.name ? "has-error" : ""))
+                td(headers="name") #{player.name}
+                  - if (errors.name)
+                    span.help-block #{errors.name}
+              .form-group(class=(errors.name ? "has-error" : ""))
+                td(headers="firstname") #{player.firstname}
+                  - if (errors.firstname)
+                    span.help-block #{errors.firstname}
+              .form-group(class=(errors.birthday ? "has-error" : ""))
+                td(headers="birthday")
+                  span= moment(player.birthday).format("DD/MM/YYYY")
+                  - if (errors.birthday)
+                    span.help-block #{errors.birthday}
+              .form-group(class=(errors.idTeam ? "has-error" : ""))
+                td(headers="idTeam") #{player.idTeam}
+                  - if (errors.idTeam)
+                    span.help-block #{errors.idTeam}
+              .form-group(class=(errors.email ? "has-error" : ""))
+                td(headers="email") #{player.email}
+                  - if (errors.email)
+                    span.help-block #{errors.email}
+              .form-group(class=(errors.displayImage ? "has-error" : ""))
+                td(headers="displayImage")
+                  img(src='./images/identite/' + player.displayImage id='cropbox' width='120' height='120' class='img-rounded')
+                  - if (errors.displayImage)
+                    span.help-block #{errors.displayImage}
+              td(headers="button")
+                input(type='checkbox', name='modification', value=player.idPlayers)

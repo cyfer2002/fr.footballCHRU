@@ -74,31 +74,3 @@ html(lang='fr')
                         a(href='#') Profile
                       li
                         a(href='/logOut') Deconnexion
-  #login.login.modal.fade(role='dialog')
-    .modal-dialog
-      .modal-content
-        .modal-header
-          .row
-            .col-md-8
-              h4.modal-title.text-center Page de login
-            .col-md-4
-              button.close(type='button' data-dismiss='modal') &times;
-        .modal-body
-          .login-form
-            .bg
-            h4 Login
-            br
-            form(action='/login' method='post' accept-charset="UTF-8" novalidate="novalidate")
-              .form-group(class=(errors.login ? "has-error" : ""))
-                input.form-control(type="text" name="username" placeholder="User" autofocus="1" value=params.username)
-                input.form-control(type="password" name="password" placeholder="Mot de passe" autofocus="1")
-                - if (errors.login)
-                  span.help-block #{errors.login}
-                h6.italic
-                  a(href='/signIn') SignIn
-              button.btn.btn-primary(type="submit")
-                .fa.fa-spinner.fa-pulse
-                | Login
-              .clearfix
-        .modal-footer
-          button(type='button', class='btn btn-default', data-dismiss='modal') Close

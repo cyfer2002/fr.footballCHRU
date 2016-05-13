@@ -11,7 +11,7 @@ var checkPopupForm = eval(babel.transformFileSync(path.join(__dirname, '../front
   presets: ['es2015']
 }).code);
 
-/* GET users listing. */
+/* GET teams list. */
 router.get('/', function(req, res, next) {
   var listEquipe = [];
   var j = 0;
@@ -36,7 +36,7 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   // Check form fields
   var errors = checkPopupForm(req.body);
-  req.session.reset();
+  req.flash.reset();
   if (Object.keys(errors).length) {
     req.session.params = req.body;
     req.session.errors = errors;
