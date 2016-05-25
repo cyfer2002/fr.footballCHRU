@@ -79,11 +79,12 @@ export default class CheckBoxForm {
         `;
         $('#'+$(this).val()).find('[headers="email"]').html(html2);
 
-        html2 = `
+        /* html2 = `
           <td><input name='displayImage' type='file' class='form-control input-md' accept="image/*"></td>
         `;
         $('#'+$(this).val()).find('[headers="displayImage"]').html(html2);
-
+        */
+        
         html2 = `
           <td><button class='glyphicon glyphicon-ok' value=${idPlayers} type="submit" /><button class="glyphicon glyphicon-remove" value=${idPlayers} </td>
         `;
