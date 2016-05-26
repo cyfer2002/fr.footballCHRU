@@ -7,7 +7,7 @@ var babel = require("babel-core");
 
 // Import es6 file
 
-var checkInscriptionForm = eval(babel.transformFileSync(path.join(__dirname, '../frontend/app/inscription/check_inscription_form.es6'), {
+var checkBoxForm = eval(babel.transformFileSync(path.join(__dirname, '../frontend/app/checkbox/check_form.es6'), {
   presets: ['es2015']
 }).code);
 
@@ -38,9 +38,16 @@ router.get('/', function(req, res, next) {
   PUT Players /players/:idPlayers
  */
 router.put('/:idPlayers', function(req, res, next) {
+  var errors = checkBoxForm(req.body);
+  if (Object.keys(errors).length) {
+    req.session.params = req.body;
+    req.flash("danger", errors)
+    return res.send({errors : errors});
+  }
   var errors = {};
   var message;
   var selectQuery = 'UPDATE PLAYERS set ? WHERE idPlayers = '+req.params.idPlayers;
+  console.log(req.body);
   var cnx = pool.getConnection(function(err, cnx){
     var sqlQuery = cnx.query(selectQuery, req.body);
     sqlQuery.on("result", function(row) {

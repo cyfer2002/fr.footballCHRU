@@ -3,6 +3,7 @@ extends layouts/application
 block content
   .container.player.editorial.checkbox-form
     form(action="/players/" method="PUT" accept-charset="UTF-8" novalidate="novalidate")
+      != messages('my_message_flash', locals)
       table.table.table-striped
         tbody
           tr
@@ -30,7 +31,7 @@ block content
                     span.help-block #{errors.firstname}
               .form-group(class=(errors.birthday ? "has-error" : ""))
                 td(headers="birthday")
-                  span= moment(player.birthday).format("DD/MM/YYYY")
+                  span= moment(player.birthday).format("YYYY-MM-DD")
                   - if (errors.birthday)
                     span.help-block #{errors.birthday}
               .form-group(class=(errors.idTeam ? "has-error" : ""))
