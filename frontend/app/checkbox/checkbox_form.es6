@@ -34,62 +34,88 @@ export default class CheckBoxForm {
         let firstname = $('#' + $(this).val()).find('[headers="firstname"]').text();
         let birthday = $('#' + $(this).val()).find('[headers="birthday"]').text();
         let idTeam = $('#' + $(this).val()).find('[headers="idTeam"]').text();
+        let displayImage = $('#' + $(this).val()).find('img').attr('src');
         let email = $('#' + $(this).val()).find('[headers="email"]').text();
 
-        let html2 = `
-        <td><input name='idPlayers' type='text' value='${idPlayers}' class='form-control input-md' readonly="readonly"></td>
-      `;
-        //$('#'+idPlayers).html(html);
-        $('#' + $(this).val()).find('[headers="idPlayers"]').replaceWith(html2);
-
-        html2 = `
-        <td><input name='name' type='text' value='${name}' class='form-control input-md'></td>
-      `;
-
-        $('#' + $(this).val()).find('[headers="name"]').replaceWith(html2);
-
-        html2 = `
-        <td><input name='firstname' type='text' value='${firstname}' class='form-control input-md'></td>
-      `;
-
-        $('#' + $(this).val()).find('[headers="firstname"]').replaceWith(html2);
-
-        html2 = `
-        <td><input name='birthday' type='date' value='${birthday}' class='form-control input-md'></td>
-      `;
-
-        $('#' + $(this).val()).find('[headers="birthday"]').replaceWith(html2);
-
-        html2 = `
-        <td><input name='idTeam' type='text' value='${idTeam}' class='form-control input-md'></td>
-      `;
-        $('#' + $(this).val()).find('[headers="idTeam"]').replaceWith(html2);
-
-        html2 = `
-        <td><input name='email' type='text' value='${email}' class='form-control input-md'></td>
-      `;
-        $('#' + $(this).val()).find('[headers="email"]').replaceWith(html2);
-
-        /* html2 = `
-         <td><input name='displayImage' type='file' class='form-control input-md' accept="image/*"></td>
-         `;
-         $('#'+$(this).val()).find('[headers="displayImage"]').html(html2);
-         */
-
-        html2 = `
-        <td>
+        var html2 = `
+        <div class="form-group">
+            <td headers="idPlayers"><input name='idPlayers' type='text' value='${idPlayers}' class='form-control input-md' readonly="readonly"></td>
+        </div>
+        <div class="form-group">
+            <td headers="name"><input name='name' type='text' value='${name}' class='form-control input-md'></td>
+        </div>
+        <div class="form-group">
+            <td headers="firstname"><input name='firstname' type='text' value='${firstname}' class='form-control input-md'></td>
+        </div>
+        <div class="form-group">
+            <td headers="birthday"><input name='birthday' type='date' value='${birthday}' class='form-control input-md'></td>
+        </div>
+        <div class="form-group">
+            <td headers="idTeam"><input name='idTeam' type='text' value='${idTeam}' class='form-control input-md'></td>
+        </div>
+        <div class="form-group">
+            <td headers="email"><input name='email' type='text' value='${email}' class='form-control input-md'></td>
+        </div>
+        <div class="form-group">
+            <td headers="displayImage">
+                <img src='${displayImage}' id='cropbox' width='120' height='120' class='img-rounded'>
+            </td>
+        </div>
+        <td headers="button">
           <button class='glyphicon glyphicon-ok' value=${idPlayers} type="submit">V</button>
           <button class="glyphicon glyphicon-remove" value=${idPlayers}>X</button>
         </td>
       `;
-        $('#' + $(this).val()).find('[headers="button"]').replaceWith(html2);
+
+        $(`tr[id=${idPlayers}]`).each(function () {
+          let elemH2 = $(this);
+          elemH2.replaceWith(`<tr id=${idPlayers}> ${html2} </tr>`);
+        });
       }
     });
   }
 
-  resetForm(){
-    $('form-group').each(function () {
-      $(this).append()
+  resetForm(idPlayers){
+    this.idPlayers = $(idPlayers);
+    $(`tr[id=${this.idPlayers}]`).each(function () {
+      let name = $('#' + $(this).val()).find('[headers="name"]').text();
+      let firstname = $('#' + $(this).val()).find('[headers="firstname"]').text();
+      let birthday = $('#' + $(this).val()).find('[headers="birthday"]').text();
+      let idTeam = $('#' + $(this).val()).find('[headers="idTeam"]').text();
+      let displayImage = $('#' + $(this).val()).find('img').attr('src');
+      let email = $('#' + $(this).val()).find('[headers="email"]').text();
+
+      var html2 = `
+        <div class="form-group">
+            <td headers="idPlayers">${this.idPlayers}</td>
+        </div>
+        <div class="form-group">
+            <td headers="name">${name}</td>
+        </div>
+        <div class="form-group">
+            <td headers="firstname">${firstname}</td>
+        </div>
+        <div class="form-group">
+            <td headers="birthday">${birthday}</td>
+        </div>
+        <div class="form-group">
+            <td headers="idTeam">${idTeam}</td>
+        </div>
+        <div class="form-group">
+            <td headers="email">${email}</td>
+        </div>
+        <div class="form-group">
+            <td headers="displayImage">
+                <img src='${displayImage}' id='cropbox' width='120' height='120' class='img-rounded'>
+            </td>
+        </div>
+        <td headers="button">
+          <input type='checkbox' name='modification' value='${this.idPlayers}'/>
+        </td>
+      `;
+
+      let elemH2 = $(this);
+      elemH2.replaceWith(`<tr id=${this.idPlayers}> ${html2} </tr>`);
     });
   }
   onSubmit(e) {
@@ -130,7 +156,8 @@ export default class CheckBoxForm {
         }
         if (data.message) {
           Flash.success(data.message, this.$form);
-          //this.$form[0].reset();
+          alert(this.inputValues.idPlayers)
+          resetForm(this.inputValues.idPlayers);
         }
       },
       complete: () => {
