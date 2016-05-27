@@ -41,6 +41,10 @@ router.get('/', function(req, res, next) {
   var errors = req.session.errors || {};
   var params = req.session.params || {};
   var user = req.user;
+  req.session.params = {};
+  req.session.errors = {};
+  req.session.success = {};
+  
 //  req.session.reset();
   res.render('home', {
     title: 'Tournoi de foot du CHRU',
@@ -57,7 +61,9 @@ router.get('/indivInscription',recaptcha.middleware.render , function(req, res, 
   var errors = req.session.errors || {};
   var params = req.session.params || {};
   var user = req.user;
-  //req.session.reset();
+  req.session.params = {};
+  req.session.errors = {};
+  req.session.success = {};
 
   // Get Team List before redirect
   var cnx = pool.getConnection(function(err, cnx){
@@ -88,10 +94,14 @@ router.get('/teamInscription', function(req, res, next) {
 });
 
 router.get('/inscriptionList', function(req, res, next) {
+  if (!req.user) return res.redirect('/');
   var playerList = [];
   var success = req.session.success;
   var errors = req.session.errors || {};
   var params = req.session.params || {};
+  req.session.params = {};
+  req.session.errors = {};
+  req.session.success = {};
   var user = req.user;
 
   var cnx = pool.getConnection(function(err, cnx){
@@ -106,7 +116,7 @@ router.get('/inscriptionList', function(req, res, next) {
         params: params,
         success: success,
         errors: errors,
-        user: user,
+        user: req.user,
         players: playerList
       });
     });
@@ -117,6 +127,7 @@ router.get('/inscriptionList', function(req, res, next) {
 });
 
 router.get('/playerList', function(req, res, next) {
+  if (!req.user) return res.redirect('/');
   var playerList = [];
   var success = req.session.success;
   var errors = req.session.errors || {};

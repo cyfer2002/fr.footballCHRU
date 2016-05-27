@@ -44,7 +44,7 @@ block content
                     span.help-block #{errors.email}
               .form-group(class=(errors.displayImage ? "has-error" : ""))
                 td(headers="displayImage")
-                  img(src='./images/identite/' + player.displayImage id='cropbox' width='120' height='120' class='img-rounded')
+                  img(src='./images/identite/' + player.displayImage id=player.idPlayers width='120' height='120' class='img-rounded')
                   - if (errors.displayImage)
                     span.help-block #{errors.displayImage}
               td(headers="button")

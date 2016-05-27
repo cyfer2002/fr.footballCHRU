@@ -5,10 +5,12 @@ export default class CheckBoxForm {
   constructor(form) {
     this.$form = $(form);
     this.$checkBox = this.$form.find('[type="checkbox"]');
+    this.$cancel = $('#remove');
     if (!this.$form.length) return;
 
-    this.$checkBox.on('click', (e) => this.onClick(e));
     this.$form.on('submit', (e) => this.onSubmit(e));
+    this.$form.on('click', '[type="checkbox"]', (e) => this.onClick(e));
+
   }
 
   get inputValues() {
@@ -26,9 +28,11 @@ export default class CheckBoxForm {
   }
 
   onClick(e) {
-    var i = 0;
+    if (this.$form.find('button[type="submit"]').length) {
+      this.resetForm(this.$form.find('input[name="idPlayers"]').val());
+    }
     $('input[type=checkbox]').each(function () {
-      if (this.checked) {
+      if ((this.checked)) {
         let idPlayers = $('#' + $(this).val()).find('[headers="idPlayers"]').text();
         let name = $('#' + $(this).val()).find('[headers="name"]').text();
         let firstname = $('#' + $(this).val()).find('[headers="firstname"]').text();
@@ -58,12 +62,11 @@ export default class CheckBoxForm {
         </div>
         <div class="form-group">
             <td headers="displayImage">
-                <img src='${displayImage}' id='cropbox' width='120' height='120' class='img-rounded'>
+                <img src='${displayImage}' id='${idPlayers}' width='120' height='120' class='img-rounded'>
             </td>
         </div>
         <td headers="button">
           <button class='glyphicon glyphicon-ok' value=${idPlayers} type="submit">V</button>
-          <button class="glyphicon glyphicon-remove" value=${idPlayers}>X</button>
         </td>
       `;
 
@@ -76,18 +79,17 @@ export default class CheckBoxForm {
   }
 
   resetForm(idPlayers){
-    this.idPlayers = $(idPlayers);
-    $(`tr[id=${this.idPlayers}]`).each(function () {
-      let name = $('#' + $(this).val()).find('[headers="name"]').text();
-      let firstname = $('#' + $(this).val()).find('[headers="firstname"]').text();
-      let birthday = $('#' + $(this).val()).find('[headers="birthday"]').text();
-      let idTeam = $('#' + $(this).val()).find('[headers="idTeam"]').text();
-      let displayImage = $('#' + $(this).val()).find('img').attr('src');
-      let email = $('#' + $(this).val()).find('[headers="email"]').text();
+    $(`tr[id=${idPlayers}]`).each(function () {
+      let name = $('input[name="name"]').val();
+      let firstname =$('input[name="firstname"]').val();
+      let birthday = $('input[name="birthday"]').val();
+      let idTeam = $('input[name="idTeam"]').val();
+      let displayImage = $(`img[id='${idPlayers}']`).attr('src');
+      let email = $('input[name="email"]').val();
 
       var html2 = `
         <div class="form-group">
-            <td headers="idPlayers">${this.idPlayers}</td>
+            <td headers="idPlayers">${idPlayers}</td>
         </div>
         <div class="form-group">
             <td headers="name">${name}</td>
@@ -96,7 +98,9 @@ export default class CheckBoxForm {
             <td headers="firstname">${firstname}</td>
         </div>
         <div class="form-group">
-            <td headers="birthday">${birthday}</td>
+            <td headers="birthday">
+                <span>${birthday}</span>
+            </td>
         </div>
         <div class="form-group">
             <td headers="idTeam">${idTeam}</td>
@@ -106,16 +110,16 @@ export default class CheckBoxForm {
         </div>
         <div class="form-group">
             <td headers="displayImage">
-                <img src='${displayImage}' id='cropbox' width='120' height='120' class='img-rounded'>
+                <img src='${displayImage}' id='${idPlayers}' width='120' height='120' class='img-rounded'>
             </td>
         </div>
         <td headers="button">
-          <input type='checkbox' name='modification' value='${this.idPlayers}'/>
+          <input type='checkbox' name='modification' value='${idPlayers}'/>
         </td>
       `;
 
       let elemH2 = $(this);
-      elemH2.replaceWith(`<tr id=${this.idPlayers}> ${html2} </tr>`);
+      elemH2.replaceWith(`<tr id=${idPlayers}> ${html2} </tr>`);
     });
   }
   onSubmit(e) {
@@ -156,8 +160,7 @@ export default class CheckBoxForm {
         }
         if (data.message) {
           Flash.success(data.message, this.$form);
-          alert(this.inputValues.idPlayers)
-          resetForm(this.inputValues.idPlayers);
+          this.resetForm(this.inputValues.idPlayers);
         }
       },
       complete: () => {
